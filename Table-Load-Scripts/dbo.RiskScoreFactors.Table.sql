@@ -6373,21 +6373,21 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'AGE1_MALE', N'Yes', 0.09, 0.076, 0.06, 0.042, 0.041, N'2025_NBPP_111623')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'Yes', N'MAGE_LAST_21_24', 0.189, 0.128, 0.086, 0.057, 0.056, N'2025_NBPP_111623')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'MAGE_LAST_21_24',N'Yes',  0.189, 0.128, 0.086, 0.057, 0.056, N'2025_NBPP_111623')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'Yes', N'MAGE_LAST_25_29', 0.197, 0.133, 0.088, 0.056, 0.055, N'2025_NBPP_111623')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult',N'MAGE_LAST_25_29',  N'Yes', 0.197, 0.133, 0.088, 0.056, 0.055, N'2025_NBPP_111623')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'Yes', N'MAGE_LAST_30_34', 0.23, 0.16, 0.11, 0.073, 0.072, N'2025_NBPP_111623')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult',N'MAGE_LAST_30_34', N'Yes',  0.23, 0.16, 0.11, 0.073, 0.072, N'2025_NBPP_111623')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'Yes', N'MAGE_LAST_35_39', 0.249, 0.174, 0.119, 0.077, 0.076, N'2025_NBPP_111623')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'MAGE_LAST_35_39', N'Yes', 0.249, 0.174, 0.119, 0.077, 0.076, N'2025_NBPP_111623')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'Yes', N'MAGE_LAST_40_44', 0.282, 0.203, 0.143, 0.095, 0.094, N'2025_NBPP_111623')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult',N'MAGE_LAST_40_44',  N'Yes', 0.282, 0.203, 0.143, 0.095, 0.094, N'2025_NBPP_111623')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'Yes', N'MAGE_LAST_45_49', 0.312, 0.228, 0.164, 0.112, 0.111, N'2025_NBPP_111623')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult',N'MAGE_LAST_45_49',  N'Yes', 0.312, 0.228, 0.164, 0.112, 0.111, N'2025_NBPP_111623')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'Yes', N'MAGE_LAST_50_54', 0.381, 0.29, 0.218, 0.161, 0.16, N'2025_NBPP_111623')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult',N'MAGE_LAST_50_54',  N'Yes', 0.381, 0.29, 0.218, 0.161, 0.16, N'2025_NBPP_111623')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'Yes', N'MAGE_LAST_55_59', 0.428, 0.33, 0.254, 0.191, 0.189, N'2025_NBPP_111623')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult',N'MAGE_LAST_55_59',  N'Yes', 0.428, 0.33, 0.254, 0.191, 0.189, N'2025_NBPP_111623')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'MAGE_LAST_21_24', N'Yes', 0.196, 0.136, 0.096, 0.068, 0.063, N'2026_NBPP_100524')
 GO
