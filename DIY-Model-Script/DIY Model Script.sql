@@ -1,8 +1,8 @@
 --use riskadjustment --- change this to whatever database you are using
-declare @benefityear int = 2023 ---- set this value to the model year you want to run your data through. Does not need to align with
-declare @startdate date = '2023-01-01' -- should generally be January 1
-declare @enddate date = '2023-12-31' --- last date of incurred dates you want to use
-declare @paidthrough date = '2025-06-30' --- paid through date
+declare @benefityear int = 2025 ---- set this value to the model year you want to run your data through. Does not need to align with
+declare @startdate date = '2025-01-01' -- should generally be January 1
+declare @enddate date = '2025-12-31' --- last date of incurred dates you want to use
+declare @paidthrough date = '2026-04-30' --- paid through date
 
 declare @state varchar(2) = 'NY'
 declare @market int = 1 --- leave null to ignore 
@@ -25,7 +25,7 @@ if @benefityear = 2021 set @model_year = '2021_DIY_033122'
 if @benefityear = 2022 set @model_year = '2022_DIY_122022'
 if @benefityear = 2023 set @model_year = '2023_NBPP_050622'
 if @benefityear = 2024 set @model_year = '2024_DIY_090624'
-if @benefityear = 2025 set @model_year = '2025_NBPP_111623'
+if @benefityear = 2025 set @model_year = '2025_DIY_072325'
 if @benefityear = 2026 set @model_year = '2026_NBPP_100524'
 
 ----- Updates HCC List table from the Enrollment tables ----

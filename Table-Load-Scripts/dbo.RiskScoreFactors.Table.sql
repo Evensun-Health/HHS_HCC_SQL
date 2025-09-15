@@ -1,5 +1,5 @@
-use [riskadjustment]
-if object_id('dbo.riskscorefactors')is not null
+--use [riskadjustment]
+if object_id('dbo.riskscorefactors') is not null
 	drop table riskscorefactors
 CREATE TABLE [dbo].[RiskScoreFactors](
 	[Model] [nvarchar](50) NULL,
@@ -7171,6 +7171,8 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'G21', N'Yes', 2.031, 1.943, 1.886, 1.81, 1.798, N'2026_NBPP_100524')
 GO
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'G24', N'Yes', 6.005, 6.004, 6.016, 6.019, 6.011, N'2026_NBPP_100524')
+GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G01', N'Yes', 2.221, 1.995, 1.784, 1.48, 1.431, N'2026_NBPP_100524')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G02B', N'Yes', 30.871, 30.641, 30.596, 30.496, 30.493, N'2026_NBPP_100524')
@@ -7879,15 +7881,15 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'SEVERE_10_HCC', N'Yes', 8.825, 9.947, 10.723, 11.493, 11.519, N'2024_DIY_090624')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_HCC_COUNT4', N'Yes', 4.029, 3.981, 3.935, 3.854, 3.847, N'2024_DIY_090624')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_4_HCC', N'Yes', 4.029, 3.981, 3.935, 3.854, 3.847, N'2024_DIY_090624')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_HCC_COUNT5', N'Yes', 8.16, 8.097, 8.057, 7.989, 7.98, N'2024_DIY_090624')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_5_HCC', N'Yes', 8.16, 8.097, 8.057, 7.989, 7.98, N'2024_DIY_090624')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_HCC_COUNT6', N'Yes', 15.312, 15.232, 15.196, 15.14, 15.128, N'2024_DIY_090624')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_6_HCC', N'Yes', 15.312, 15.232, 15.196, 15.14, 15.128, N'2024_DIY_090624')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_HCC_COUNT7', N'Yes', 18.743, 18.632, 18.584, 18.522, 18.511, N'2024_DIY_090624')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_7_HCC', N'Yes', 18.743, 18.632, 18.584, 18.522, 18.511, N'2024_DIY_090624')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_HCC_COUNT8PLUS', N'Yes', 36.031, 36.054, 36.081, 36.066, 36.056, N'2024_DIY_090624')
+INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'TRANSPLANT_8_HCC', N'Yes', 36.031, 36.054, 36.081, 36.066, 36.056, N'2024_DIY_090624')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.288, 0.195, 0.146, 0.109, 0.108, N'2024_DIY_090624')
 GO
@@ -8369,8 +8371,6 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 3.1589999198913574, 2.7119998931884766, 2.4270000457763672, 2.2400000095367432, 2.2400000095367432, N'2017_DIY_071217')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2017_DIY_071217')
-GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 378.927001953125, 377.56100463867188, 376.49099731445312, 376.50698852539062, 376.50799560546875, N'2017_DIY_071217')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY4', N'Yes', 194.4010009765625, 193.0570068359375, 192.00300598144531, 191.98100280761719, 191.98100280761719, N'2017_DIY_071217')
@@ -8775,7 +8775,7 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'ED_11', N'Yes', 0.10000000149011612, 0.092000000178813934, 0.083999998867511749, 0.0820000022649765, 0.0820000022649765, N'2017_DIY_112717')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2017_DIY_112717')
+
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.22400000691413879, 0.14499999582767487, 0.067000001668930054, 0.020999999716877937, 0.019999999552965164, N'2017_DIY_112717')
 GO
@@ -9261,8 +9261,6 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'INT_GROUP_H', N'Yes', 12.043000221252441, 12.305999755859375, 12.432999610900879, 12.5600004196167, 12.571999549865723, N'2016_DIY_121916')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2016_DIY_121916')
-GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.26199999451637268, 0.19099999964237213, 0.097000002861022949, 0.016000000759959221, 0.008999999612569809, N'2016_DIY_121916')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_5_9', N'Yes', 0.17900000512599945, 0.12800000607967377, 0.057999998331069946, 0, 0, N'2016_DIY_121916')
@@ -9567,8 +9565,8 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 3.5280001163482666, 3.0090000629425049, 2.8010001182556152, 2.5130000114440918, 2.5, N'2016_DIY_121916')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2016_DIY_121916')
-GO
+
+
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 434.24398803710938, 432.60400390625, 431.54000854492188, 431.54800415039062, 431.55398559570312, N'2016_DIY_121916')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY4', N'Yes', 218.5679931640625, 216.96499633789063, 215.92999267578125, 215.89199829101563, 215.89199829101563, N'2016_DIY_121916')
@@ -9973,8 +9971,6 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'ED_11', N'Yes', 0.10000000149011612, 0.092000000178813934, 0.083999998867511749, 0.0820000022649765, 0.0820000022649765, N'2017_DIY_071217')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2017_DIY_071217')
-GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.22400000691413879, 0.14499999582767487, 0.067000001668930054, 0.020999999716877937, 0.019999999552965164, N'2017_DIY_071217')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_5_9', N'Yes', 0.1550000011920929, 0.097999997437000275, 0.037999998778104782, 0.0040000001899898052, 0.0040000001899898052, N'2017_DIY_071217')
@@ -10100,8 +10096,6 @@ GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G17', N'Yes', 1.1260000467300415, 0.93900001049041748, 0.75, 0.55900001525878906, 0.55500000715255737, N'2017_DIY_112717')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 3.1589999198913574, 2.7119998931884766, 2.4270000457763672, 2.2400000095367432, 2.2400000095367432, N'2017_DIY_112717')
-GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2017_DIY_112717')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 378.927001953125, 377.56100463867188, 376.49099731445312, 376.50698852539062, 376.50799560546875, N'2017_DIY_112717')
 GO
@@ -10559,8 +10553,7 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'RXC_12_X_HCC130_129_128', N'Yes', 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, N'2018_DIY_040419')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2018_DIY_040419')
-GO
+
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.20800000429153442, 0.15099999308586121, 0.0860000029206276, 0.032000001519918442, 0.023000000044703484, N'2018_DIY_040419')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_5_9', N'Yes', 0.14300000667572022, 0.10100000351667404, 0.05299999937415123, 0.013000000268220902, 0.0070000002160668373, N'2018_DIY_040419')
@@ -10866,8 +10859,6 @@ GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G17', N'Yes', 1.0490000247955322, 0.89499998092651367, 0.76999998092651367, 0.574999988079071, 0.5339999794960022, N'2018_DIY_040419')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 2.9579999446868896, 2.5569999217987061, 2.3619999885559082, 2.1459999084472656, 2.125, N'2018_DIY_040419')
-GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2018_DIY_040419')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 289.83499145507812, 288.58599853515625, 287.6669921875, 287.60101318359375, 287.60598754882812, N'2018_DIY_040419')
 GO
@@ -11325,8 +11316,6 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'RXC_12_X_HCC130_129_128', N'Yes', 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, N'2018_DIY_040618')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2018_DIY_040618')
-GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.20800000429153442, 0.15099999308586121, 0.0860000029206276, 0.032000001519918442, 0.023000000044703484, N'2018_DIY_040618')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_5_9', N'Yes', 0.14300000667572022, 0.10100000351667404, 0.05299999937415123, 0.013000000268220902, 0.0070000002160668373, N'2018_DIY_040618')
@@ -11632,8 +11621,6 @@ GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G17', N'Yes', 1.0490000247955322, 0.89499998092651367, 0.76999998092651367, 0.574999988079071, 0.5339999794960022, N'2018_DIY_040618')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 2.9579999446868896, 2.5569999217987061, 2.3619999885559082, 2.1459999084472656, 2.125, N'2018_DIY_040618')
-GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2018_DIY_040618')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 289.83499145507812, 288.58599853515625, 287.6669921875, 287.60101318359375, 287.60598754882812, N'2018_DIY_040618')
 GO
@@ -12091,8 +12078,7 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'RXC_12_X_HCC130_129_128', N'Yes', 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, 0.012000000104308128, N'2018_DIY_120418')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2018_DIY_120418')
-GO
+
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.20800000429153442, 0.15099999308586121, 0.0860000029206276, 0.032000001519918442, 0.023000000044703484, N'2018_DIY_120418')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_5_9', N'Yes', 0.14300000667572022, 0.10100000351667404, 0.05299999937415123, 0.013000000268220902, 0.0070000002160668373, N'2018_DIY_120418')
@@ -12398,8 +12384,6 @@ GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G17', N'Yes', 1.0490000247955322, 0.89499998092651367, 0.76999998092651367, 0.574999988079071, 0.5339999794960022, N'2018_DIY_120418')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 2.9579999446868896, 2.5569999217987061, 2.3619999885559082, 2.1459999084472656, 2.125, N'2018_DIY_120418')
-GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2018_DIY_120418')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 289.83499145507812, 288.58599853515625, 287.6669921875, 287.60101318359375, 287.60598754882812, N'2018_DIY_120418')
 GO
@@ -12853,8 +12837,6 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'RXC_10_X_HCC159_158', N'Yes', 29.048000335693359, 29.277000427246094, 29.4060001373291, 29.465999603271484, 29.472000122070312, N'2019_DIY_011720')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2019_DIY_011720')
-GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.20000000298023224, 0.14900000393390656, 0.092000000178813934, 0.041999999433755875, 0.037999998778104782, N'2019_DIY_011720')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_5_9', N'Yes', 0.13899999856948853, 0.10000000149011612, 0.054999999701976776, 0.018999999389052391, 0.016000000759959221, N'2019_DIY_011720')
@@ -13160,8 +13142,6 @@ GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G17', N'Yes', 1.0590000152587891, 0.90399998426437378, 0.75999999046325684, 0.53299999237060547, 0.50700002908706665, N'2019_DIY_011720')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 2.8959999084472656, 2.5109999179840088, 2.2929999828338623, 1.9869999885559082, 1.9500000476837158, N'2019_DIY_011720')
-GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2019_DIY_011720')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 253.76300048828125, 252.4219970703125, 251.30799865722656, 251.30400085449219, 251.30599975585938, N'2019_DIY_011720')
 GO
@@ -13615,8 +13595,6 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'RXC_10_X_HCC159_158', N'Yes', 29.048000335693359, 29.277000427246094, 29.4060001373291, 29.465999603271484, 29.472000122070312, N'2019_DIY_041520')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2019_DIY_041520')
-GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.20000000298023224, 0.14900000393390656, 0.092000000178813934, 0.041999999433755875, 0.037999998778104782, N'2019_DIY_041520')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_5_9', N'Yes', 0.13899999856948853, 0.10000000149011612, 0.054999999701976776, 0.018999999389052391, 0.016000000759959221, N'2019_DIY_041520')
@@ -13922,8 +13900,6 @@ GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G17', N'Yes', 1.0590000152587891, 0.90399998426437378, 0.75999999046325684, 0.53299999237060547, 0.50700002908706665, N'2019_DIY_041520')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 2.8959999084472656, 2.5109999179840088, 2.2929999828338623, 1.9869999885559082, 1.9500000476837158, N'2019_DIY_041520')
-GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2019_DIY_041520')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 253.76300048828125, 252.4219970703125, 251.30799865722656, 251.30400085449219, 251.30599975585938, N'2019_DIY_041520')
 GO
@@ -14377,8 +14353,6 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Adult', N'RXC_10_X_HCC159_158', N'Yes', 29.048000335693359, 29.277000427246094, 29.4060001373291, 29.465999603271484, 29.472000122070312, N'2019_DIY_071619')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2019_DIY_071619')
-GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_2_4', N'Yes', 0.20000000298023224, 0.14900000393390656, 0.092000000178813934, 0.041999999433755875, 0.037999998778104782, N'2019_DIY_071619')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'MAGE_LAST_5_9', N'Yes', 0.13899999856948853, 0.10000000149011612, 0.054999999701976776, 0.018999999389052391, 0.016000000759959221, N'2019_DIY_071619')
@@ -14685,8 +14659,6 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Child', N'G18', N'Yes', 2.8959999084472656, 2.5109999179840088, 2.2929999828338623, 1.9869999885559082, 1.9500000476837158, N'2019_DIY_071619')
 GO
-INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, N'2019_DIY_071619')
-GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY5', N'Yes', 253.76300048828125, 252.4219970703125, 251.30799865722656, 251.30400085449219, 251.30599975585938, N'2019_DIY_071619')
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'EXTREMELY_IMMATURE_X_SEVERITY4', N'Yes', 154.07400512695313, 152.66099548339844, 151.49899291992188, 151.38800048828125, 151.37600708007813, N'2019_DIY_071619')
@@ -14741,3 +14713,434 @@ INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Sco
 GO
 INSERT [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year]) VALUES (N'Infant', N'AGE1_MALE', N'Yes', 0.1080000028014183, 0.093000002205371857, 0.079000003635883331, 0.054000001400709152, 0.052000001072883606, N'2019_DIY_071619')
 GO
+INSERT INTO [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year])
+VALUES
+('Adult', 'MAGE_LAST_21_24', 'Yes', 0.189, 0.128, 0.086, 0.057, 0.056, '2025_DIY_072325'),
+('Adult', 'MAGE_LAST_25_29', 'Yes', 0.197, 0.133, 0.088, 0.056, 0.055, '2025_DIY_072325'),
+('Adult', 'MAGE_LAST_30_34', 'Yes', 0.23, 0.16, 0.11, 0.073, 0.072, '2025_DIY_072325'),
+('Adult', 'MAGE_LAST_35_39', 'Yes', 0.249, 0.174, 0.119, 0.077, 0.076, '2025_DIY_072325'),
+('Adult', 'MAGE_LAST_40_44', 'Yes', 0.282, 0.203, 0.143, 0.095, 0.094, '2025_DIY_072325'),
+('Adult', 'MAGE_LAST_45_49', 'Yes', 0.312, 0.228, 0.164, 0.112, 0.111, '2025_DIY_072325'),
+('Adult', 'MAGE_LAST_50_54', 'Yes', 0.381, 0.29, 0.218, 0.161, 0.16, '2025_DIY_072325'),
+('Adult', 'MAGE_LAST_55_59', 'Yes', 0.428, 0.33, 0.254, 0.191, 0.189, '2025_DIY_072325'),
+('Adult', 'MAGE_LAST_60_GT', 'Yes', 0.472, 0.365, 0.282, 0.212, 0.21, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_21_24', 'Yes', 0.285, 0.196, 0.127, 0.078, 0.076, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_25_29', 'Yes', 0.308, 0.212, 0.137, 0.082, 0.081, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_30_34', 'Yes', 0.37, 0.268, 0.188, 0.126, 0.125, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_35_39', 'Yes', 0.428, 0.323, 0.239, 0.174, 0.172, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_40_44', 'Yes', 0.482, 0.372, 0.284, 0.211, 0.209, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_45_49', 'Yes', 0.481, 0.369, 0.277, 0.2, 0.198, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_50_54', 'Yes', 0.519, 0.404, 0.307, 0.226, 0.224, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_55_59', 'Yes', 0.482, 0.368, 0.271, 0.191, 0.189, '2025_DIY_072325'),
+('Adult', 'FAGE_LAST_60_GT', 'Yes', 0.475, 0.358, 0.261, 0.179, 0.176, '2025_DIY_072325'),
+('Adult', 'HHS_HCC001', 'Yes', 0.342, 0.265, 0.234, 0.197, 0.196, '2025_DIY_072325'),
+('Adult', 'HHS_HCC002', 'Yes', 9.075, 8.875, 8.83, 8.74, 8.739, '2025_DIY_072325'),
+('Adult', 'HHS_HCC003', 'Yes', 8.379, 8.276, 8.229, 8.151, 8.149, '2025_DIY_072325'),
+('Adult', 'HHS_HCC004', 'Yes', 8.328, 8.217, 8.161, 8.071, 8.068, '2025_DIY_072325'),
+('Adult', 'HHS_HCC006', 'Yes', 8.532, 8.478, 8.419, 8.333, 8.33, '2025_DIY_072325'),
+('Adult', 'HHS_HCC008', 'Yes', 23.002, 22.629, 22.616, 22.506, 22.506, '2025_DIY_072325'),
+('Adult', 'HHS_HCC009', 'Yes', 12.575, 12.312, 12.271, 12.156, 12.155, '2025_DIY_072325'),
+('Adult', 'HHS_HCC010', 'Yes', 5.705, 5.535, 5.473, 5.362, 5.36, '2025_DIY_072325'),
+('Adult', 'HHS_HCC011', 'Yes', 3.651, 3.476, 3.405, 3.283, 3.28, '2025_DIY_072325'),
+('Adult', 'HHS_HCC012', 'Yes', 2.424, 2.295, 2.23, 2.129, 2.127, '2025_DIY_072325'),
+('Adult', 'HHS_HCC013', 'Yes', 0.967, 0.875, 0.785, 0.677, 0.674, '2025_DIY_072325'),
+('Adult', 'HHS_HCC018', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC019', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC020', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC021', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC022', 'Yes', 0.311, 0.282, 0.244, 0.18, 0.178, '2025_DIY_072325'),
+('Adult', 'HHS_HCC023', 'Yes', 11.342, 11.221, 11.179, 11.105, 11.104, '2025_DIY_072325'),
+('Adult', 'HHS_HCC026', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC027', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC029', 'Yes', 6.512, 6.413, 6.373, 6.305, 6.303, '2025_DIY_072325'),
+('Adult', 'HHS_HCC030', 'Yes', 1.314, 1.237, 1.184, 1.108, 1.104, '2025_DIY_072325'),
+('Adult', 'HHS_HCC034', 'Yes', 6.014, 6.07, 6.119, 6.189, 6.189, '2025_DIY_072325'),
+('Adult', 'HHS_HCC035_1', 'Yes', 7.464, 7.288, 7.254, 7.181, 7.184, '2025_DIY_072325'),
+('Adult', 'HHS_HCC035_2', 'Yes', 2.319, 2.16, 2.125, 2.042, 2.041, '2025_DIY_072325'),
+('Adult', 'HHS_HCC036', 'Yes', 0.613, 0.534, 0.49, 0.417, 0.416, '2025_DIY_072325'),
+('Adult', 'HHS_HCC037_1', 'Yes', 0.514, 0.454, 0.403, 0.348, 0.347, '2025_DIY_072325'),
+('Adult', 'HHS_HCC037_2', 'Yes', 0.514, 0.454, 0.403, 0.348, 0.347, '2025_DIY_072325'),
+('Adult', 'HHS_HCC041', 'Yes', 6.014, 6.07, 6.119, 6.189, 6.189, '2025_DIY_072325'),
+('Adult', 'HHS_HCC042', 'Yes', 11.053, 10.907, 10.903, 10.857, 10.857, '2025_DIY_072325'),
+('Adult', 'HHS_HCC045', 'Yes', 5.038, 4.837, 4.783, 4.669, 4.668, '2025_DIY_072325'),
+('Adult', 'HHS_HCC046', 'Yes', 2.467, 2.298, 2.253, 2.167, 2.166, '2025_DIY_072325'),
+('Adult', 'HHS_HCC047', 'Yes', 2.467, 2.298, 2.251, 2.147, 2.146, '2025_DIY_072325'),
+('Adult', 'HHS_HCC048', 'Yes', 1.108, 1.023, 0.944, 0.82, 0.816, '2025_DIY_072325'),
+('Adult', 'HHS_HCC054', 'Yes', 8.617, 8.468, 8.446, 8.388, 8.388, '2025_DIY_072325'),
+('Adult', 'HHS_HCC055', 'Yes', 4.567, 4.401, 4.381, 4.321, 4.322, '2025_DIY_072325'),
+('Adult', 'HHS_HCC056', 'Yes', 1.082, 0.993, 0.93, 0.845, 0.843, '2025_DIY_072325'),
+('Adult', 'HHS_HCC057', 'Yes', 0.399, 0.329, 0.249, 0.146, 0.142, '2025_DIY_072325'),
+('Adult', 'HHS_HCC061', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC062', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC063', 'Yes', 0.922, 0.819, 0.759, 0.678, 0.676, '2025_DIY_072325'),
+('Adult', 'HHS_HCC066', 'Yes', 72.761, 72.491, 72.466, 72.379, 72.38, '2025_DIY_072325'),
+('Adult', 'HHS_HCC067', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC068', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC069', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC070', 'Yes', 1.69, 1.607, 1.553, 1.479, 1.477, '2025_DIY_072325'),
+('Adult', 'HHS_HCC071', 'Yes', 1.69, 1.607, 1.553, 1.479, 1.477, '2025_DIY_072325'),
+('Adult', 'HHS_HCC073', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC074', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC075', 'Yes', 2.148, 2.068, 2.02, 1.947, 1.946, '2025_DIY_072325'),
+('Adult', 'HHS_HCC081', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC082', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC083', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC084', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC087_1', 'Yes', 2.227, 2.063, 1.986, 1.864, 1.862, '2025_DIY_072325'),
+('Adult', 'HHS_HCC087_2', 'Yes', 2.19, 2.03, 1.951, 1.82, 1.818, '2025_DIY_072325'),
+('Adult', 'HHS_HCC088', 'Yes', 0.969, 0.871, 0.786, 0.672, 0.669, '2025_DIY_072325'),
+('Adult', 'HHS_HCC090', 'Yes', 0.663, 0.586, 0.492, 0.379, 0.376, '2025_DIY_072325'),
+('Adult', 'HHS_HCC094', 'Yes', 2.0, 1.894, 1.827, 1.722, 1.719, '2025_DIY_072325'),
+('Adult', 'HHS_HCC096', 'Yes', 8.59, 8.557, 8.527, 8.484, 8.481, '2025_DIY_072325'),
+('Adult', 'HHS_HCC097', 'Yes', 0.938, 0.875, 0.826, 0.764, 0.763, '2025_DIY_072325'),
+('Adult', 'HHS_HCC102', 'Yes', 0.718, 0.641, 0.553, 0.455, 0.452, '2025_DIY_072325'),
+('Adult', 'HHS_HCC103', 'Yes', 0.663, 0.586, 0.492, 0.379, 0.376, '2025_DIY_072325'),
+('Adult', 'HHS_HCC106', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC107', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC108', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC109', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC110', 'Yes', 5.153, 4.975, 4.928, 4.826, 4.824, '2025_DIY_072325'),
+('Adult', 'HHS_HCC111', 'Yes', 5.09, 4.946, 4.876, 4.755, 4.753, '2025_DIY_072325'),
+('Adult', 'HHS_HCC112', 'Yes', 0.73, 0.629, 0.565, 0.467, 0.465, '2025_DIY_072325'),
+('Adult', 'HHS_HCC113', 'Yes', 0.424, 0.355, 0.299, 0.219, 0.217, '2025_DIY_072325'),
+('Adult', 'HHS_HCC114', 'Yes', 1.205, 1.12, 1.063, 0.972, 0.969, '2025_DIY_072325'),
+('Adult', 'HHS_HCC115', 'Yes', 5.216, 5.134, 5.117, 5.076, 5.076, '2025_DIY_072325'),
+('Adult', 'HHS_HCC117', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC118', 'Yes', 2.218, 2.101, 2.042, 1.944, 1.941, '2025_DIY_072325'),
+('Adult', 'HHS_HCC119', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC120', 'Yes', 1.04, 0.948, 0.884, 0.792, 0.789, '2025_DIY_072325'),
+('Adult', 'HHS_HCC121', 'Yes', 9.585, 9.491, 9.44, 9.362, 9.36, '2025_DIY_072325'),
+('Adult', 'HHS_HCC122', 'Yes', 10.181, 10.044, 9.986, 9.886, 9.884, '2025_DIY_072325'),
+('Adult', 'HHS_HCC123', 'Yes', 4.533, 4.405, 4.34, 4.237, 4.235, '2025_DIY_072325'),
+('Adult', 'HHS_HCC125', 'Yes', 21.869, 21.665, 21.623, 21.532, 21.534, '2025_DIY_072325'),
+('Adult', 'HHS_HCC126', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC127', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325');
+GO
+
+INSERT INTO [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year])
+VALUES
+('Adult', 'HHS_HCC128', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC129', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC130', 'Yes', 1.896, 1.809, 1.773, 1.707, 1.705, '2025_DIY_072325'),
+('Adult', 'HHS_HCC131', 'Yes', 4.955, 4.737, 4.72, 4.652, 4.653, '2025_DIY_072325'),
+('Adult', 'HHS_HCC132', 'Yes', 3.69, 3.489, 3.452, 3.355, 3.355, '2025_DIY_072325'),
+('Adult', 'HHS_HCC135', 'Yes', 8.848, 8.756, 8.695, 8.602, 8.599, '2025_DIY_072325'),
+('Adult', 'HHS_HCC137', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC138', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC139', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC142', 'Yes', 1.921, 1.819, 1.752, 1.645, 1.645, '2025_DIY_072325'),
+('Adult', 'HHS_HCC145', 'Yes', 10.648, 10.49, 10.444, 10.356, 10.355, '2025_DIY_072325'),
+('Adult', 'HHS_HCC146', 'Yes', 1.428, 1.314, 1.282, 1.212, 1.212, '2025_DIY_072325'),
+('Adult', 'HHS_HCC149', 'Yes', 2.218, 2.102, 2.044, 1.944, 1.941, '2025_DIY_072325'),
+('Adult', 'HHS_HCC150', 'Yes', 3.309, 3.19, 3.178, 3.134, 3.134, '2025_DIY_072325'),
+('Adult', 'HHS_HCC151', 'Yes', 2.494, 2.386, 2.342, 2.264, 2.262, '2025_DIY_072325'),
+('Adult', 'HHS_HCC153', 'Yes', 7.988, 7.837, 7.849, 7.827, 7.828, '2025_DIY_072325'),
+('Adult', 'HHS_HCC154', 'Yes', 5.128, 4.989, 4.949, 4.869, 4.868, '2025_DIY_072325'),
+('Adult', 'HHS_HCC156', 'Yes', 7.621, 7.535, 7.461, 7.345, 7.341, '2025_DIY_072325'),
+('Adult', 'HHS_HCC158', 'Yes', 11.099, 10.994, 10.963, 10.924, 10.93, '2025_DIY_072325'),
+('Adult', 'HHS_HCC159', 'Yes', 4.156, 4.021, 3.969, 3.883, 3.881, '2025_DIY_072325'),
+('Adult', 'HHS_HCC160', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC161_1', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC161_2', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC162', 'Yes', 1.615, 1.529, 1.476, 1.391, 1.388, '2025_DIY_072325'),
+('Adult', 'HHS_HCC163', 'Yes', 7.187, 7.124, 7.105, 7.067, 7.067, '2025_DIY_072325'),
+('Adult', 'HHS_HCC174', 'Yes', 1.224, 1.097, 1.01, 0.878, 0.874, '2025_DIY_072325'),
+('Adult', 'HHS_HCC183', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC184', 'Yes', 20.669, 20.237, 20.33, 20.158, 20.046, '2025_DIY_072325'),
+('Adult', 'HHS_HCC187', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC188', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC203', 'Yes', 1.85, 1.673, 1.534, 1.319, 1.314, '2025_DIY_072325'),
+('Adult', 'HHS_HCC204', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC205', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC207', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC208', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC209', 'Yes', 2.769, 2.554, 2.335, 1.972, 1.962, '2025_DIY_072325'),
+('Adult', 'HHS_HCC210', 'Yes', 0.815, 0.714, 0.561, 0.37, 0.363, '2025_DIY_072325'),
+('Adult', 'HHS_HCC211', 'Yes', 0.53, 0.454, 0.318, 0.17, 0.166, '2025_DIY_072325'),
+('Adult', 'HHS_HCC212', 'Yes', 0.018, 0.005, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'HHS_HCC217', 'Yes', 1.557, 1.464, 1.433, 1.375, 1.374, '2025_DIY_072325'),
+('Adult', 'HHS_HCC218', 'Yes', 23.714, 23.524, 23.474, 23.384, 23.383, '2025_DIY_072325'),
+('Adult', 'HHS_HCC219', 'Yes', 2.604, 2.484, 2.428, 2.345, 2.344, '2025_DIY_072325'),
+('Adult', 'HHS_HCC223', 'Yes', 18.201, 18.057, 17.99, 17.882, 17.879, '2025_DIY_072325'),
+('Adult', 'HHS_HCC226', 'Yes', 8.018, 7.783, 7.765, 7.688, 7.688, '2025_DIY_072325'),
+('Adult', 'HHS_HCC228', 'Yes', 4.277, 4.116, 4.047, 3.925, 3.922, '2025_DIY_072325'),
+('Adult', 'HHS_HCC234', 'Yes', 4.861, 4.706, 4.682, 4.619, 4.618, '2025_DIY_072325'),
+('Adult', 'HHS_HCC251', 'Yes', 18.571, 18.584, 18.547, 18.531, 18.535, '2025_DIY_072325'),
+('Adult', 'HHS_HCC253', 'Yes', 5.697, 5.584, 5.563, 5.511, 5.511, '2025_DIY_072325'),
+('Adult', 'HHS_HCC254', 'Yes', 0.936, 0.835, 0.799, 0.738, 0.736, '2025_DIY_072325'),
+('Adult', 'G01', 'Yes', 0.259, 0.214, 0.172, 0.13, 0.128, '2025_DIY_072325'),
+('Adult', 'G02B', 'Yes', 23.821, 23.642, 23.619, 23.556, 23.556, '2025_DIY_072325'),
+('Adult', 'G04', 'Yes', 1.924, 1.801, 1.74, 1.639, 1.637, '2025_DIY_072325'),
+('Adult', 'G06A', 'Yes', 11.237, 11.118, 11.09, 11.024, 11.02, '2025_DIY_072325'),
+('Adult', 'G08', 'Yes', 4.065, 3.975, 3.947, 3.887, 3.885, '2025_DIY_072325'),
+('Adult', 'G09A', 'Yes', 1.602, 1.472, 1.377, 1.233, 1.229, '2025_DIY_072325'),
+('Adult', 'G09C', 'Yes', 0.902, 0.788, 0.716, 0.612, 0.61, '2025_DIY_072325'),
+('Adult', 'G10', 'Yes', 9.112, 8.957, 8.905, 8.806, 8.805, '2025_DIY_072325'),
+('Adult', 'G11', 'Yes', 6.38, 6.241, 6.187, 6.089, 6.087, '2025_DIY_072325'),
+('Adult', 'G12', 'Yes', 1.393, 1.304, 1.236, 1.136, 1.134, '2025_DIY_072325'),
+('Adult', 'G13', 'Yes', 8.558, 8.341, 8.3, 8.21, 8.209, '2025_DIY_072325'),
+('Adult', 'G14', 'Yes', 17.404, 17.301, 17.262, 17.214, 17.224, '2025_DIY_072325'),
+('Adult', 'G15A', 'Yes', 0.643, 0.567, 0.491, 0.395, 0.392, '2025_DIY_072325'),
+('Adult', 'G16', 'Yes', 0.773, 0.689, 0.685, 0.645, 0.633, '2025_DIY_072325'),
+('Adult', 'G17A', 'Yes', 0.646, 0.565, 0.439, 0.26, 0.254, '2025_DIY_072325'),
+('Adult', 'G18A', 'Yes', 3.756, 3.47, 3.289, 2.991, 2.985, '2025_DIY_072325'),
+('Adult', 'G21', 'Yes', 2.122, 2.033, 1.975, 1.895, 1.893, '2025_DIY_072325'),
+('Adult', 'G24', 'Yes', 6.32, 6.253, 6.239, 6.228, 6.219, '2025_DIY_072325'),
+('Adult', 'SEVERE_1_HCC', 'Yes', -6.014, -6.07, -6.119, -6.189, -6.189, '2025_DIY_072325'),
+('Adult', 'SEVERE_2_HCC', 'Yes', -5.733, -5.806, -5.833, -5.886, -5.886, '2025_DIY_072325'),
+('Adult', 'SEVERE_3_HCC', 'Yes', -4.904, -4.952, -4.891, -4.846, -4.844, '2025_DIY_072325'),
+('Adult', 'SEVERE_4_HCC', 'Yes', -4.19, -4.178, -4.033, -3.871, -3.865, '2025_DIY_072325'),
+('Adult', 'SEVERE_5_HCC', 'Yes', -3.522, -3.432, -3.216, -2.954, -2.945, '2025_DIY_072325'),
+('Adult', 'SEVERE_6_HCC', 'Yes', -3.024, -2.835, -2.557, -2.202, -2.192, '2025_DIY_072325'),
+('Adult', 'SEVERE_7_HCC', 'Yes', -2.432, -2.116, -1.78, -1.33, -1.318, '2025_DIY_072325'),
+('Adult', 'SEVERE_8_HCC', 'Yes', -2.179, -1.784, -1.416, -0.91, -0.896, '2025_DIY_072325'),
+('Adult', 'SEVERE_9_HCC', 'Yes', -0.287, 0.253, 0.676, 1.279, 1.294, '2025_DIY_072325'),
+('Adult', 'SEVERE_10_HCC', 'Yes', 7.398, 8.299, 8.836, 9.657, 9.679, '2025_DIY_072325'),
+('Adult', 'TRANSPLANT_4_HCC', 'Yes', 3.792, 3.704, 3.651, 3.531, 3.516, '2025_DIY_072325'),
+('Adult', 'TRANSPLANT_5_HCC', 'Yes', 7.054, 6.949, 6.906, 6.792, 6.775, '2025_DIY_072325'),
+('Adult', 'TRANSPLANT_6_HCC', 'Yes', 12.584, 12.463, 12.431, 12.324, 12.304, '2025_DIY_072325'),
+('Adult', 'TRANSPLANT_7_HCC', 'Yes', 15.636, 15.506, 15.473, 15.364, 15.346, '2025_DIY_072325'),
+('Adult', 'TRANSPLANT_8_HCC', 'Yes', 31.955, 31.916, 31.908, 31.845, 31.825, '2025_DIY_072325'),
+('Adult', 'ED_1', 'Yes', 11.208, 9.742, 8.808, 7.844, 7.818, '2025_DIY_072325'),
+('Adult', 'ED_2', 'Yes', 5.197, 4.458, 3.958, 3.479, 3.466, '2025_DIY_072325'),
+('Adult', 'ED_3', 'Yes', 3.378, 2.898, 2.549, 2.224, 2.216, '2025_DIY_072325'),
+('Adult', 'ED_4', 'Yes', 2.129, 1.799, 1.545, 1.313, 1.307, '2025_DIY_072325'),
+('Adult', 'ED_5', 'Yes', 1.586, 1.34, 1.143, 0.959, 0.955, '2025_DIY_072325'),
+('Adult', 'ED_6', 'Yes', 1.039, 0.857, 0.705, 0.56, 0.556, '2025_DIY_072325'),
+('Adult', 'RXC_01', 'Yes', 5.097, 4.612, 4.345, 3.92, 3.908, '2025_DIY_072325'),
+('Adult', 'RXC_02', 'Yes', 8.273, 7.809, 7.812, 7.711, 7.714, '2025_DIY_072325'),
+('Adult', 'RXC_03', 'Yes', 0.08, 0.072, 0.064, 0.051, 0.036, '2025_DIY_072325'),
+('Adult', 'RXC_04', 'Yes', 0.901, 1.115, 1.007, 1.206, 1.39, '2025_DIY_072325'),
+('Adult', 'RXC_05', 'Yes', 1.324, 1.227, 1.105, 0.941, 0.936, '2025_DIY_072325'),
+('Adult', 'RXC_06', 'Yes', 1.366, 1.193, 1.018, 0.844, 0.838, '2025_DIY_072325'),
+('Adult', 'RXC_07', 'Yes', 0.8, 0.702, 0.582, 0.409, 0.403, '2025_DIY_072325'),
+('Adult', 'RXC_08', 'Yes', 15.175, 14.409, 14.206, 13.774, 13.767, '2025_DIY_072325'),
+('Adult', 'RXC_09', 'Yes', 12.005, 11.495, 11.478, 11.335, 11.337, '2025_DIY_072325'),
+('Adult', 'RXC_10', 'Yes', 17.441, 17.041, 17.022, 16.903, 16.902, '2025_DIY_072325'),
+('Adult', 'RXC_01_X_HCC001', 'Yes', 2.467, 2.521, 2.79, 3.101, 3.115, '2025_DIY_072325'),
+('Adult', 'RXC_02_X_HCC037_1_036_035_2_035_1_034', 'Yes', -0.514, -0.454, -0.403, -0.348, -0.347, '2025_DIY_072325');
+GO
+
+INSERT INTO [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year])
+VALUES
+('Adult', 'RXC_03_X_HCC142', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'RXC_04_X_HCC184_183_187_188', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Adult', 'RXC_05_X_HCC048_041', 'Yes', -0.688, -0.631, -0.57, -0.471, -0.468, '2025_DIY_072325'),
+('Adult', 'RXC_06_X_HCC018_019_020_021', 'Yes', 0.402, 0.444, 0.532, 0.544, 0.546, '2025_DIY_072325'),
+('Adult', 'RXC_07_X_HCC018_019_020_021', 'Yes', -0.258, -0.213, -0.172, -0.13, -0.128, '2025_DIY_072325'),
+('Adult', 'RXC_08_X_HCC118', 'Yes', -0.132, 0.227, 0.497, 0.902, 0.914, '2025_DIY_072325'),
+('Adult', 'RXC_09_X_HCC056_057_AND_048_041', 'Yes', 0.343, 0.396, 0.433, 0.492, 0.494, '2025_DIY_072325'),
+('Adult', 'RXC_09_X_HCC056', 'Yes', -1.082, -0.993, -0.93, -0.845, -0.843, '2025_DIY_072325'),
+('Adult', 'RXC_09_X_HCC057', 'Yes', -0.399, -0.329, -0.249, -0.146, -0.142, '2025_DIY_072325'),
+('Adult', 'RXC_09_X_HCC048_041', 'Yes', 1.315, 1.406, 1.499, 1.634, 1.638, '2025_DIY_072325'),
+('Adult', 'RXC_10_X_HCC159_158', 'Yes', 42.562, 42.609, 42.695, 42.807, 42.812, '2025_DIY_072325'),
+('Child', 'MAGE_LAST_2_4', 'Yes', 0.27, 0.191, 0.141, 0.105, 0.104, '2025_DIY_072325'),
+('Child', 'MAGE_LAST_5_9', 'Yes', 0.204, 0.135, 0.096, 0.071, 0.071, '2025_DIY_072325'),
+('Child', 'MAGE_LAST_10_14', 'Yes', 0.224, 0.156, 0.115, 0.09, 0.089, '2025_DIY_072325'),
+('Child', 'MAGE_LAST_15_20', 'Yes', 0.26, 0.187, 0.137, 0.102, 0.101, '2025_DIY_072325'),
+('Child', 'FAGE_LAST_2_4', 'Yes', 0.223, 0.153, 0.113, 0.089, 0.088, '2025_DIY_072325'),
+('Child', 'FAGE_LAST_5_9', 'Yes', 0.149, 0.086, 0.053, 0.034, 0.034, '2025_DIY_072325'),
+('Child', 'FAGE_LAST_10_14', 'Yes', 0.222, 0.153, 0.113, 0.089, 0.088, '2025_DIY_072325'),
+('Child', 'FAGE_LAST_15_20', 'Yes', 0.3, 0.212, 0.145, 0.097, 0.095, '2025_DIY_072325'),
+('Child', 'HHS_HCC001', 'Yes', 4.355, 3.942, 3.856, 3.659, 3.657, '2025_DIY_072325'),
+('Child', 'HHS_HCC002', 'Yes', 14.567, 14.37, 14.294, 14.176, 14.174, '2025_DIY_072325'),
+('Child', 'HHS_HCC003', 'Yes', 13.944, 13.811, 13.745, 13.658, 13.656, '2025_DIY_072325'),
+('Child', 'HHS_HCC004', 'Yes', 12.972, 12.833, 12.741, 12.617, 12.614, '2025_DIY_072325'),
+('Child', 'HHS_HCC006', 'Yes', 18.957, 18.895, 18.813, 18.719, 18.716, '2025_DIY_072325'),
+('Child', 'HHS_HCC008', 'Yes', 30.53, 30.304, 30.243, 30.137, 30.136, '2025_DIY_072325'),
+('Child', 'HHS_HCC009', 'Yes', 8.962, 8.738, 8.64, 8.486, 8.484, '2025_DIY_072325'),
+('Child', 'HHS_HCC010', 'Yes', 7.708, 7.523, 7.421, 7.266, 7.263, '2025_DIY_072325'),
+('Child', 'HHS_HCC011', 'Yes', 4.194, 4.057, 3.972, 3.844, 3.841, '2025_DIY_072325'),
+('Child', 'HHS_HCC012', 'Yes', 4.194, 4.057, 3.972, 3.844, 3.841, '2025_DIY_072325'),
+('Child', 'HHS_HCC013', 'Yes', 1.265, 1.155, 1.058, 0.937, 0.933, '2025_DIY_072325'),
+('Child', 'HHS_HCC018', 'Yes', 11.66, 11.58, 11.544, 11.505, 11.503, '2025_DIY_072325'),
+('Child', 'HHS_HCC019', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC020', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC021', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC023', 'Yes', 19.614, 19.505, 19.457, 19.397, 19.396, '2025_DIY_072325'),
+('Child', 'HHS_HCC026', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC027', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC028', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC029', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC030', 'Yes', 5.289, 5.072, 5.007, 4.902, 4.901, '2025_DIY_072325'),
+('Child', 'HHS_HCC034', 'Yes', 11.66, 11.58, 11.544, 11.505, 11.503, '2025_DIY_072325'),
+('Child', 'HHS_HCC035_1', 'Yes', 7.742, 7.607, 7.57, 7.488, 7.487, '2025_DIY_072325'),
+('Child', 'HHS_HCC035_2', 'Yes', 7.742, 7.607, 7.57, 7.488, 7.487, '2025_DIY_072325'),
+('Child', 'HHS_HCC036', 'Yes', 3.999, 3.881, 3.835, 3.764, 3.763, '2025_DIY_072325'),
+('Child', 'HHS_HCC037_1', 'Yes', 1.257, 1.152, 1.093, 1.027, 1.025, '2025_DIY_072325'),
+('Child', 'HHS_HCC037_2', 'Yes', 0.294, 0.249, 0.198, 0.14, 0.138, '2025_DIY_072325'),
+('Child', 'HHS_HCC041', 'Yes', 13.387, 13.303, 13.228, 13.137, 13.135, '2025_DIY_072325'),
+('Child', 'HHS_HCC042', 'Yes', 19.019, 18.756, 18.703, 18.597, 18.597, '2025_DIY_072325'),
+('Child', 'HHS_HCC045', 'Yes', 4.601, 4.431, 4.343, 4.208, 4.205, '2025_DIY_072325'),
+('Child', 'HHS_HCC046', 'Yes', 10.235, 10.115, 10.085, 10.007, 10.007, '2025_DIY_072325'),
+('Child', 'HHS_HCC047', 'Yes', 4.988, 4.771, 4.687, 4.541, 4.538, '2025_DIY_072325'),
+('Child', 'HHS_HCC048', 'Yes', 9.947, 9.582, 9.498, 9.313, 9.311, '2025_DIY_072325'),
+('Child', 'HHS_HCC054', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC055', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC056', 'Yes', 4.632, 4.397, 4.315, 4.181, 4.179, '2025_DIY_072325'),
+('Child', 'HHS_HCC057', 'Yes', 0.878, 0.777, 0.679, 0.559, 0.555, '2025_DIY_072325'),
+('Child', 'HHS_HCC061', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC062', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC063', 'Yes', 0.972, 0.841, 0.742, 0.616, 0.613, '2025_DIY_072325'),
+('Child', 'HHS_HCC066', 'Yes', 64.093, 63.672, 63.604, 63.429, 63.427, '2025_DIY_072325'),
+('Child', 'HHS_HCC067', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC068', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC069', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC070', 'Yes', 3.564, 3.4, 3.303, 3.173, 3.17, '2025_DIY_072325'),
+('Child', 'HHS_HCC071', 'Yes', 3.369, 3.233, 3.16, 3.055, 3.053, '2025_DIY_072325'),
+('Child', 'HHS_HCC073', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC074', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC075', 'Yes', 4.043, 3.938, 3.869, 3.779, 3.777, '2025_DIY_072325'),
+('Child', 'HHS_HCC081', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC082', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC083', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC084', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC087_1', 'Yes', 3.545, 3.304, 3.188, 3.007, 3.004, '2025_DIY_072325'),
+('Child', 'HHS_HCC087_2', 'Yes', 3.289, 3.067, 2.94, 2.745, 2.741, '2025_DIY_072325'),
+('Child', 'HHS_HCC088', 'Yes', 2.506, 2.319, 2.191, 2.017, 2.013, '2025_DIY_072325'),
+('Child', 'HHS_HCC090', 'Yes', 0.348, 0.263, 0.159, 0.043, 0.04, '2025_DIY_072325'),
+('Child', 'HHS_HCC094', 'Yes', 2.207, 2.07, 1.977, 1.846, 1.843, '2025_DIY_072325'),
+('Child', 'HHS_HCC096', 'Yes', 12.082, 12.007, 11.947, 11.87, 11.868, '2025_DIY_072325'),
+('Child', 'HHS_HCC097', 'Yes', 0.867, 0.758, 0.686, 0.583, 0.581, '2025_DIY_072325'),
+('Child', 'HHS_HCC102', 'Yes', 2.506, 2.319, 2.191, 2.017, 2.013, '2025_DIY_072325'),
+('Child', 'HHS_HCC103', 'Yes', 0.374, 0.303, 0.222, 0.14, 0.139, '2025_DIY_072325'),
+('Child', 'HHS_HCC106', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC107', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC108', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC109', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC110', 'Yes', 4.75, 4.568, 4.457, 4.285, 4.28, '2025_DIY_072325'),
+('Child', 'HHS_HCC111', 'Yes', 49.556, 49.316, 49.259, 49.139, 49.137, '2025_DIY_072325'),
+('Child', 'HHS_HCC112', 'Yes', 0.638, 0.454, 0.383, 0.266, 0.265, '2025_DIY_072325'),
+('Child', 'HHS_HCC113', 'Yes', 0.254, 0.134, 0.073, 0.029, 0.028, '2025_DIY_072325'),
+('Child', 'HHS_HCC114', 'Yes', 1.624, 1.514, 1.448, 1.345, 1.342, '2025_DIY_072325'),
+('Child', 'HHS_HCC115', 'Yes', 10.278, 10.133, 10.111, 10.053, 10.053, '2025_DIY_072325'),
+('Child', 'HHS_HCC117', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC118', 'Yes', 9.135, 8.789, 8.736, 8.602, 8.604, '2025_DIY_072325'),
+('Child', 'HHS_HCC119', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC120', 'Yes', 1.556, 1.429, 1.316, 1.169, 1.165, '2025_DIY_072325'),
+('Child', 'HHS_HCC121', 'Yes', 11.666, 11.63, 11.604, 11.58, 11.579, '2025_DIY_072325'),
+('Child', 'HHS_HCC122', 'Yes', 11.216, 11.25, 11.261, 11.287, 11.287, '2025_DIY_072325'),
+('Child', 'HHS_HCC123', 'Yes', 4.058, 3.911, 3.807, 3.664, 3.659, '2025_DIY_072325'),
+('Child', 'HHS_HCC125', 'Yes', 24.72, 24.506, 24.442, 24.337, 24.336, '2025_DIY_072325'),
+('Child', 'HHS_HCC126', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325');
+GO
+
+INSERT INTO [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year])
+VALUES
+('Child', 'HHS_HCC127', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC128', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC129', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC130', 'Yes', 4.067, 3.968, 3.914, 3.83, 3.828, '2025_DIY_072325'),
+('Child', 'HHS_HCC131', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC132', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC135', 'Yes', 17.077, 16.964, 16.888, 16.786, 16.783, '2025_DIY_072325'),
+('Child', 'HHS_HCC137', 'Yes', 3.938, 3.796, 3.682, 3.54, 3.536, '2025_DIY_072325'),
+('Child', 'HHS_HCC138', 'Yes', 0.986, 0.896, 0.79, 0.685, 0.682, '2025_DIY_072325'),
+('Child', 'HHS_HCC139', 'Yes', 0.59, 0.506, 0.425, 0.347, 0.345, '2025_DIY_072325'),
+('Child', 'HHS_HCC142', 'Yes', 3.118, 2.98, 2.899, 2.785, 2.783, '2025_DIY_072325'),
+('Child', 'HHS_HCC145', 'Yes', 12.686, 12.611, 12.565, 12.497, 12.495, '2025_DIY_072325'),
+('Child', 'HHS_HCC146', 'Yes', 1.47, 1.362, 1.304, 1.21, 1.208, '2025_DIY_072325'),
+('Child', 'HHS_HCC149', 'Yes', 1.049, 0.952, 0.899, 0.807, 0.804, '2025_DIY_072325'),
+('Child', 'HHS_HCC150', 'Yes', 5.471, 5.353, 5.295, 5.207, 5.205, '2025_DIY_072325'),
+('Child', 'HHS_HCC151', 'Yes', 1.374, 1.253, 1.183, 1.072, 1.07, '2025_DIY_072325'),
+('Child', 'HHS_HCC153', 'Yes', 11.86, 11.625, 11.557, 11.424, 11.422, '2025_DIY_072325'),
+('Child', 'HHS_HCC154', 'Yes', 8.127, 7.988, 7.947, 7.872, 7.871, '2025_DIY_072325'),
+('Child', 'HHS_HCC156', 'Yes', 19.738, 19.604, 19.533, 19.426, 19.425, '2025_DIY_072325'),
+('Child', 'HHS_HCC158', 'Yes', 13.387, 13.303, 13.228, 13.137, 13.135, '2025_DIY_072325'),
+('Child', 'HHS_HCC159', 'Yes', 48.718, 48.241, 48.201, 48.054, 48.055, '2025_DIY_072325'),
+('Child', 'HHS_HCC160', 'Yes', 1.658, 1.507, 1.403, 1.267, 1.264, '2025_DIY_072325'),
+('Child', 'HHS_HCC161_1', 'Yes', 1.323, 1.171, 1.045, 0.889, 0.885, '2025_DIY_072325'),
+('Child', 'HHS_HCC161_2', 'Yes', 0.32, 0.25, 0.17, 0.102, 0.1, '2025_DIY_072325'),
+('Child', 'HHS_HCC162', 'Yes', 1.49, 1.361, 1.249, 1.115, 1.111, '2025_DIY_072325'),
+('Child', 'HHS_HCC163', 'Yes', 11.216, 11.25, 11.261, 11.287, 11.287, '2025_DIY_072325'),
+('Child', 'HHS_HCC183', 'Yes', 11.66, 11.58, 11.544, 11.505, 11.503, '2025_DIY_072325'),
+('Child', 'HHS_HCC184', 'Yes', 29.641, 29.391, 29.371, 29.278, 29.278, '2025_DIY_072325'),
+('Child', 'HHS_HCC187', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC188', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC203', 'Yes', 0.864, 0.731, 0.565, 0.411, 0.406, '2025_DIY_072325'),
+('Child', 'HHS_HCC204', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC205', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC207', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC208', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC209', 'Yes', 2.399, 2.179, 1.914, 1.475, 1.46, '2025_DIY_072325'),
+('Child', 'HHS_HCC210', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC211', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC212', 'Yes', 0.276, 0.187, 0.079, 0.037, 0.036, '2025_DIY_072325'),
+('Child', 'HHS_HCC217', 'Yes', 1.877, 1.782, 1.712, 1.634, 1.632, '2025_DIY_072325'),
+('Child', 'HHS_HCC218', 'Yes', 22.876, 22.657, 22.576, 22.44, 22.437, '2025_DIY_072325'),
+('Child', 'HHS_HCC219', 'Yes', 2.441, 2.286, 2.187, 2.056, 2.053, '2025_DIY_072325'),
+('Child', 'HHS_HCC223', 'Yes', 22.876, 22.657, 22.576, 22.44, 22.437, '2025_DIY_072325'),
+('Child', 'HHS_HCC226', 'Yes', 4.636, 4.428, 4.327, 4.191, 4.188, '2025_DIY_072325'),
+('Child', 'HHS_HCC228', 'Yes', 4.483, 4.293, 4.176, 3.999, 3.994, '2025_DIY_072325'),
+('Child', 'HHS_HCC234', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'HHS_HCC251', 'Yes', 13.387, 13.303, 13.228, 13.137, 13.135, '2025_DIY_072325'),
+('Child', 'HHS_HCC253', 'Yes', 5.711, 5.551, 5.525, 5.451, 5.45, '2025_DIY_072325'),
+('Child', 'HHS_HCC254', 'Yes', 0.0, 0.0, 0.0, 0.0, 0.0, '2025_DIY_072325'),
+('Child', 'G01', 'Yes', 2.364, 2.121, 1.914, 1.622, 1.615, '2025_DIY_072325'),
+('Child', 'G02B', 'Yes', 34.44, 34.213, 34.169, 34.07, 34.07, '2025_DIY_072325'),
+('Child', 'G02D', 'Yes', 4.69, 4.583, 4.523, 4.442, 4.439, '2025_DIY_072325'),
+('Child', 'G03', 'Yes', 4.144, 3.957, 3.872, 3.746, 3.745, '2025_DIY_072325'),
+('Child', 'G04', 'Yes', 1.241, 1.14, 1.069, 0.981, 0.979, '2025_DIY_072325'),
+('Child', 'G06A', 'Yes', 12.305, 12.163, 12.117, 12.039, 12.038, '2025_DIY_072325'),
+('Child', 'G08', 'Yes', 5.105, 4.975, 4.918, 4.826, 4.824, '2025_DIY_072325'),
+('Child', 'G09A', 'Yes', 2.35, 2.204, 2.111, 1.972, 1.969, '2025_DIY_072325'),
+('Child', 'G09C', 'Yes', 0.899, 0.765, 0.658, 0.502, 0.499, '2025_DIY_072325'),
+('Child', 'G10', 'Yes', 10.147, 9.959, 9.908, 9.81, 9.809, '2025_DIY_072325'),
+('Child', 'G11', 'Yes', 9.868, 9.664, 9.615, 9.515, 9.514, '2025_DIY_072325'),
+('Child', 'G12', 'Yes', 5.546, 5.399, 5.326, 5.206, 5.203, '2025_DIY_072325'),
+('Child', 'G13', 'Yes', 15.72, 15.472, 15.398, 15.267, 15.266, '2025_DIY_072325'),
+('Child', 'G14', 'Yes', 13.387, 13.303, 13.228, 13.137, 13.135, '2025_DIY_072325'),
+('Child', 'G16', 'Yes', 0.787, 0.749, 0.722, 0.685, 0.683, '2025_DIY_072325'),
+('Child', 'G17A', 'Yes', 0.474, 0.369, 0.227, 0.089, 0.086, '2025_DIY_072325'),
+('Child', 'G18A', 'Yes', 3.166, 2.876, 2.634, 2.231, 2.219, '2025_DIY_072325'),
+('Child', 'G19B', 'Yes', 0.42, 0.308, 0.152, 0.039, 0.036, '2025_DIY_072325'),
+('Child', 'G22', 'Yes', 3.818, 3.627, 3.528, 3.362, 3.357, '2025_DIY_072325'),
+('Child', 'G23', 'Yes', 1.06, 1.025, 1.005, 0.979, 0.979, '2025_DIY_072325'),
+('Child', 'SEVERE_1_HCC', 'Yes', -11.216, -11.25, -11.261, -11.287, -11.287, '2025_DIY_072325'),
+('Child', 'SEVERE_2_HCC', 'Yes', -11.137, -11.2, -11.218, -11.265, -11.266, '2025_DIY_072325'),
+('Child', 'SEVERE_3_HCC', 'Yes', -9.692, -9.76, -9.689, -9.658, -9.655, '2025_DIY_072325'),
+('Child', 'SEVERE_4_HCC', 'Yes', -8.984, -8.987, -8.809, -8.652, -8.645, '2025_DIY_072325'),
+('Child', 'SEVERE_5_HCC', 'Yes', -6.593, -6.543, -6.303, -6.068, -6.059, '2025_DIY_072325'),
+('Child', 'SEVERE_6_HCC', 'Yes', -2.061, -1.828, -1.468, -1.064, -1.051, '2025_DIY_072325'),
+('Child', 'SEVERE_7_HCC', 'Yes', -2.061, -1.828, -1.468, -1.064, -1.051, '2025_DIY_072325'),
+('Child', 'SEVERE_8_HCC', 'Yes', 17.868, 18.55, 19.132, 19.858, 19.877, '2025_DIY_072325'),
+('Child', 'SEVERE_9_HCC', 'Yes', 17.868, 18.55, 19.132, 19.858, 19.877, '2025_DIY_072325'),
+('Child', 'SEVERE_10_HCC', 'Yes', 17.868, 18.55, 19.132, 19.858, 19.877, '2025_DIY_072325'),
+('Child', 'TRANSPLANT_4_HCC', 'Yes', 14.488, 14.558, 14.58, 14.612, 14.613, '2025_DIY_072325'),
+('Child', 'TRANSPLANT_5_HCC', 'Yes', 14.488, 14.558, 14.58, 14.612, 14.613, '2025_DIY_072325'),
+('Child', 'TRANSPLANT_6_HCC', 'Yes', 14.488, 14.558, 14.58, 14.612, 14.613, '2025_DIY_072325'),
+('Child', 'TRANSPLANT_7_HCC', 'Yes', 14.488, 14.558, 14.58, 14.612, 14.613, '2025_DIY_072325'),
+('Child', 'TRANSPLANT_8_HCC', 'Yes', 14.488, 14.558, 14.58, 14.612, 14.613, '2025_DIY_072325'),
+('Infant', 'EXTREMELY_IMMATURE_X_SEVERITY5', 'Yes', 204.04, 202.652, 202.406, 201.915, 201.913, '2025_DIY_072325'),
+('Infant', 'EXTREMELY_IMMATURE_X_SEVERITY4', 'Yes', 149.999, 148.437, 148.051, 147.377, 147.372, '2025_DIY_072325'),
+('Infant', 'EXTREMELY_IMMATURE_X_SEVERITY3', 'Yes', 32.887, 31.619, 31.251, 30.693, 30.687, '2025_DIY_072325'),
+('Infant', 'EXTREMELY_IMMATURE_X_SEVERITY2', 'Yes', 32.887, 31.619, 31.251, 30.693, 30.687, '2025_DIY_072325'),
+('Infant', 'EXTREMELY_IMMATURE_X_SEVERITY1', 'Yes', 32.887, 31.619, 31.251, 30.693, 30.687, '2025_DIY_072325'),
+('Infant', 'IMMATURE_X_SEVERITY5', 'Yes', 121.913, 120.553, 120.309, 119.828, 119.827, '2025_DIY_072325'),
+('Infant', 'IMMATURE_X_SEVERITY4', 'Yes', 71.026, 69.564, 69.264, 68.692, 68.689, '2025_DIY_072325'),
+('Infant', 'IMMATURE_X_SEVERITY3', 'Yes', 32.887, 31.619, 31.251, 30.693, 30.687, '2025_DIY_072325'),
+('Infant', 'IMMATURE_X_SEVERITY2', 'Yes', 30.558, 29.332, 28.96, 28.403, 28.398, '2025_DIY_072325'),
+('Infant', 'IMMATURE_X_SEVERITY1', 'Yes', 25.11, 23.887, 23.485, 22.871, 22.863, '2025_DIY_072325'),
+('Infant', 'PREMATURE_MULTIPLES_X_SEVERITY5', 'Yes', 108.585, 107.335, 107.096, 106.631, 106.628, '2025_DIY_072325'),
+('Infant', 'PREMATURE_MULTIPLES_X_SEVERITY4', 'Yes', 29.666, 28.404, 28.06, 27.49, 27.486, '2025_DIY_072325'),
+('Infant', 'PREMATURE_MULTIPLES_X_SEVERITY3', 'Yes', 13.527, 12.617, 12.148, 11.482, 11.467, '2025_DIY_072325'),
+('Infant', 'PREMATURE_MULTIPLES_X_SEVERITY2', 'Yes', 8.071, 7.368, 6.849, 6.149, 6.131, '2025_DIY_072325'),
+('Infant', 'PREMATURE_MULTIPLES_X_SEVERITY1', 'Yes', 5.765, 5.167, 4.644, 4.023, 4.005, '2025_DIY_072325'),
+('Infant', 'TERM_X_SEVERITY5', 'Yes', 81.884, 80.752, 80.438, 79.915, 79.909, '2025_DIY_072325'),
+('Infant', 'TERM_X_SEVERITY4', 'Yes', 16.19, 15.254, 14.803, 14.17, 14.158, '2025_DIY_072325'),
+('Infant', 'TERM_X_SEVERITY3', 'Yes', 5.77, 5.207, 4.688, 4.061, 4.041, '2025_DIY_072325'),
+('Infant', 'TERM_X_SEVERITY2', 'Yes', 3.712, 3.231, 2.707, 2.109, 2.092, '2025_DIY_072325'),
+('Infant', 'TERM_X_SEVERITY1', 'Yes', 1.968, 1.597, 1.135, 0.784, 0.776, '2025_DIY_072325'),
+('Infant', 'AGE1_X_SEVERITY5', 'Yes', 69.391, 68.741, 68.568, 68.287, 68.284, '2025_DIY_072325'),
+('Infant', 'AGE1_X_SEVERITY4', 'Yes', 12.653, 12.17, 11.942, 11.641, 11.635, '2025_DIY_072325'),
+('Infant', 'AGE1_X_SEVERITY3', 'Yes', 2.829, 2.569, 2.374, 2.179, 2.174, '2025_DIY_072325');
+GO
+
+INSERT INTO [dbo].[RiskScoreFactors] ([Model], [Variable], [Variable_Used_in_Risk_Score_Formula], [Platinum_Level], [Gold_Level], [Silver_Level], [Bronze_Level], [Catastrophic_Level], [Model_Year])
+VALUES
+('Infant', 'AGE1_X_SEVERITY2', 'Yes', 1.855, 1.628, 1.423, 1.216, 1.21, '2025_DIY_072325'),
+('Infant', 'AGE1_X_SEVERITY1', 'Yes', 0.581, 0.487, 0.431, 0.394, 0.393, '2025_DIY_072325'),
+('Infant', 'AGE0_MALE', 'Yes', 0.604, 0.566, 0.539, 0.475, 0.473, '2025_DIY_072325'),
+('Infant', 'AGE1_MALE', 'Yes', 0.09, 0.076, 0.06, 0.042, 0.041, '2025_DIY_072325');
+GO
+
