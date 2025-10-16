@@ -1,8 +1,13 @@
 /****** Object:  Table [dbo].[DX_Mapping_Table]    Script Date: 11/9/2024 6:08:03 AM ******/
+USE Sandbox
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DX_Mapping_Table]') AND type in (N'U'))
+DROP TABLE [dbo].[DX_Mapping_Table]
+GO
+
 CREATE TABLE [dbo].[DX_Mapping_Table](
 	[DGNS_CD] [nvarchar](50) NOT NULL,
 	[DGNS_CD_EFF_STRT_DT] [date] NOT NULL,

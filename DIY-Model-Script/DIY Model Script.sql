@@ -1,15 +1,15 @@
---use riskadjustment --- change this to whatever database you are using
+use sandbox --- change this to whatever database you are using
 declare @benefityear int = 2025 ---- set this value to the model year you want to run your data through. Does not need to align with
 declare @startdate date = '2025-01-01' -- should generally be January 1
 declare @enddate date = '2025-12-31' --- last date of incurred dates you want to use
 declare @paidthrough date = '2026-04-30' --- paid through date
 
 declare @state varchar(2) = 'NY'
-declare @market int = 1 --- leave null to ignore 
-declare @droptemp bit = 1 --- set to 0 to retain temp tables at end. Useful for troubleshooting
+declare @market int = null --- leave null to ignore 
+declare @droptemp bit = 0 --- set to 0 to retain temp tables at end. Useful for troubleshooting
 declare @issuer_hios varchar(5) = '99999' -- leave null to ignore and treat all records as part of same HIOS
-declare @output_table varchar(50) = 'hcc_list' --- set this to the name of the table you want the output set to be saved to.
-declare @drop_existing bit = 0
+declare @output_table varchar(50) = 'hcc_list_testoutput' --- set this to the name of the table you want the output set to be saved to.
+declare @drop_existing bit = 1
 /* set to 1 to delete the output table if it exists. If set to 0, script will still run and produce results to the hcc_list
 table but will not drop the existing output_table specified above and will throw an error */
 /***** End User Inputs; Do not edit below this line ******/
@@ -28,84 +28,108 @@ if @benefityear = 2024 set @model_year = '2024_DIY_090624'
 if @benefityear = 2025 set @model_year = '2025_DIY_072325'
 if @benefityear = 2026 set @model_year = '2026_NBPP_100524'
 
------ Updates HCC List table from the Enrollment tables ----
+/* Updates HCC List table from the Enrollment tables. Account for State CSR variants In the 2025 benefit year, Arkansas, California, Colorado, Connecticut, Massachusetts, New Mexico, and New 
+York have premium assistance Medicaid Alternative plans or other types of State subsidy plans.*/
 truncate table hcc_list
 
   insert into hcc_list
-	  (MBR_ID,
-	  eff_date, exp_date, dob, metal, hios, csr, sex, market, state, ratingarea, subscriberflag, subscribernumber, zip_code, race, ethnicity,
-	  aptc_flag, statepremiumsubsidy_flag, statecsr_flag, ichra_qsehra, qsehra_spouse,
+	  (issuer_member_id,
+	  eff_date, exp_date, birth_date, metal, hios_plan_id, csr, sex, market, state, rating_area, subscriber_flag, subscriber_number, zip_code, race, ethnicity,
+	  aptc_flag, state_premium_subsidy_flag, state_csr_flag, ichra_qsehra, qsehra_spouse,
 	  qsehra_medical, udf_1, udf_2, udf_3, udf_4, udf_5,
-	  edge_memberid,
-memberuid,
-	  ssn, cmspolicyid, firstname, lastname, suffix,brokernpn, brokername, commissions, groupid,
+	  edge_member_id,
+member_uid,
+	  ssn, cms_policy_id, first_name, last_name, suffix,broker_npn, broker_name, commissions, group_id,
 	  premium,
-	  issuer_hios
+	  hios_issuer_id
 	  )
-	  SELECT distinct [MemberID]
-		  ,case when effdat < @startdate then @startdate else effdat end effdat
-		  ,case when expdat > @enddate then @enddate else expdat end expdat
-		  ,birthdate
-				,[MetalLevel]
-		  ,[HIOS_ID]
-		  ,case when right(hios_ID, 2) = '06' then 1
-		  when right(hios_id,2) = '05' then 2
-		  when right(hios_id, 2) = '04' then 3
-		  when right(hios_id, 2) in ('00','01') then 4
-		  when right(hios_id,2) = '02' and metallevel = 'bronze' then 7
-		  when right(hios_id, 2) = '02' and metallevel = 'silver' then 6
-		  when right(hios_id, 2) = '02' and metallevel = 'gold' then 5
-		  when right(hios_id,2) = '02' and metallevel = 'platinum' then 12
-		  when right(hios_id,2) = '03' and metallevel = 'bronze' then 11
-		  when right(hios_id, 2) = '03' and metallevel = 'silver' then 10
-		  when right(hios_id, 2) = '03' and metallevel = 'gold' then 9
-		  when right(hios_id,2) = '03' and metallevel = 'platinum' then 8
-		  else 4 end CSR
-
-
-		  ,[Gender]
-		  ,[Market],state,
-		  ratingarea, subscriberflag, subscribernumber, zip_code, race, ethnicity,
-	  aptc_flag, statepremiumsubsidy_flag, statecsr_flag, ichra_qsehra, qsehra_spouse, 
-	  qsehra_medical, udf_1, udf_2, udf_3, udf_4, udf_5,edge_memberid,	  coalesce(memberuid, edge_memberid, memberid),
-	  	  ssn, cmspolicyid, firstname, lastname, suffix,brokernpn, brokername, commissionpaid,
-		  groupid,
-		  premium,
-		  issuer_hios
+	  SELECT distinct [issuer_member_id]
+		  ,case when eff_date < @startdate then @startdate else eff_date end eff_date
+		  ,case when exp_date > @enddate then @enddate else exp_date end exp_date
+		  ,birth_date
+				,[metal_level]
+		  ,[hios_plan_id]
+		  ,case when right(hios_plan_id, 2) in ('06','07','30','32','35','36') or (right(hios_plan_id, 2) in ('31','34') and @state='MA') then 1
+		  when right(hios_plan_id,2) = '05'  then 2
+		  when right(hios_plan_id, 2) = '04' then 3
+		  when right(hios_plan_id, 2) in ('00','01') then 4
+		  when right(hios_plan_id,2) = '02' and metal_level = 'bronze' then 7
+		  when right(hios_plan_id, 2) = '02' and metal_level = 'silver' then 6
+		  when right(hios_plan_id, 2) = '02' and metal_level = 'gold' then 5
+		  when right(hios_plan_id,2) = '02' and metal_level = 'platinum' then 12
+		  when right(hios_plan_id,2) = '03' and metal_level = 'bronze' then 11
+		  when right(hios_plan_id, 2) = '03' and metal_level = 'silver' then 10
+		  when (right(hios_plan_id, 2) = '03' or right(hios_plan_id, 2) = '43') and metal_level = 'gold' then 9
+		  when right(hios_plan_id,2) = '03' and metal_level = 'platinum' then 8
+          when right(hios_plan_id, 2) = '42' then 13
+		  else 4 end csr
+		  ,[gender]
+		  ,[market]
+          ,state
+          ,rating_area_int
+          ,subscriber_flag
+          ,subscriber_number
+          ,zip_code
+          ,race
+          ,ethnicity
+	      ,aptc_flag
+          ,state_premium_subsidy_flag
+          ,state_csr_flag
+          ,ichra_qsehra
+          ,qsehra_spouse 
+	      ,qsehra_medical
+          ,udf_1
+          ,udf_2
+          ,udf_3
+          ,udf_4
+          ,udf_5
+          ,edge_member_id
+          ,coalesce(member_uid, edge_member_id, issuer_member_id)
+          ,ssn
+          ,cms_policy_id
+          ,first_name
+          ,last_name
+          ,suffix
+          ,broker_npn
+          ,broker_name
+          ,commission_paid
+          ,group_id
+          ,subscriber_monthly_premium
+          ,case when market in ('1','2','3','4') then substring(hios_plan_id,1,5) else null end as hios_issuer_id
 	  FROM [Enrollment]
-  where effdat <= @enddate and expdat >= @startdate
-  and market = @market
+  where eff_date <= @enddate and exp_date >= @startdate
+  and (market = @market or @market is null)
   and state = @state
- and (@issuer_hios is null or issuer_hios = @issuer_hios)
+ and (@issuer_hios is null or substring(hios_plan_id,1,5) = @issuer_hios)
 
 	--- if memberuid is blank (rather than null), update with memberid
-	update hcc_list set memberuid= mbr_id where memberuid = ''
+	update hcc_list set member_uid= issuer_member_id where member_uid = ''
 
   ---- aggregates enrollment for a member across the whole year so that the EDF and age at diagnosis are accurate if there are multiple enrollment spans ----
 
   if object_id('tempdb..#yearly_enrollment') is not null drop table #yearly_enrollment
   declare @cal_year int = year(@startdate)
-  select memberuid, case when min(eff_date) < datefromparts(@cal_year,1,1) then datefromparts(@cal_year,1,1) else min(eff_date) end first_day, 
-  case when max(exp_date) > datefromparts(@cal_year, 12, 31) then datefromparts(@cal_year, 12, 31) else max(exp_date) end last_day, year(exp_date) benefit_year, dob
+  select member_uid, case when min(eff_date) < datefromparts(@cal_year,1,1) then datefromparts(@cal_year,1,1) else min(eff_date) end first_day, 
+  case when max(exp_date) > datefromparts(@cal_year, 12, 31) then datefromparts(@cal_year, 12, 31) else max(exp_date) end last_day, year(exp_date) benefit_year, birth_date
   into #yearly_enrollment
   from hcc_list
-  group by memberuid, year(exp_date), dob
+  group by member_uid, year(exp_date), birth_date
 
     if object_id('tempdb..#age_last') is not null drop table #age_last
-select memberuid, benefit_year, FLOOR(DATEDIFF(DAY, dob, last_day) / 365.25) age_last
+select member_uid, benefit_year, FLOOR(DATEDIFF(DAY, birth_date, last_day) / 365.25) age_last
 into #age_last
   from #yearly_enrollment
 
       if object_id('tempdb..#age_first') is not null drop table #age_first
-select memberuid,benefit_year, FLOOR(DATEDIFF(DAY, dob, first_day) / 365.25) age_first
+select member_uid,benefit_year, FLOOR(DATEDIFF(DAY, birth_date, first_day) / 365.25) age_first
 into #age_first
   from #yearly_enrollment
 
 
 
       if object_id('tempdb..#enrollment_duration') is not null drop table #enrollment_duration
-select memberuid, sum(datediff(d, eff_date, exp_date)) enr_dur, year(exp_date) benefit_year into #enrollment_duration from hcc_list
-group by memberuid, year(exp_date)
+select member_uid, sum(datediff(d, eff_date, exp_date)) enr_dur, year(exp_date) benefit_year into #enrollment_duration from hcc_list
+group by member_uid, year(exp_date)
 
 
   ----- determine enrollment duration for the given calendar year ----
@@ -114,12 +138,12 @@ group by memberuid, year(exp_date)
   hc.enr_dur = diff.enr_dur,
   hc.age_first = af.age_first
   from hcc_list hc
-  join #age_last age on hc.MemberUID = age.MemberUID
+  join #age_last age on hc.member_uid = age.member_uid
   and year(hc.exp_date) = age.benefit_year
-  join #enrollment_duration diff on hc.MemberUID = diff.MemberUID
+  join #enrollment_duration diff on hc.member_uid = diff.member_uid
 
   and year(hc.exp_date) = diff.benefit_year
-  join #age_first af on hc.MemberUID = af.MemberUID
+  join #age_first af on hc.member_uid = af.member_uid
 
     
 drop table #enrollment_duration
@@ -131,109 +155,110 @@ drop table #yearly_enrollment
 
   if object_id('tempdb..#AcceptableClaims') is not null drop table #AcceptableClaims
 create table #AcceptableClaims
-(claimnumber varchar(50), 
+(medical_claim_number varchar(50), 
 acceptable_reason varchar(50))
 CREATE NONCLUSTERED INDEX acceptable
-ON [dbo].[#AcceptableClaims] ([claimnumber])
+ON [dbo].[#AcceptableClaims] ([medical_claim_number])
 
 --- First insert inpatient claims where an allowable HCPCS isn't required
 
 insert into #acceptableclaims
-select distinct claimnumber, 'BillTypeIP'
-from MedicalClaims where formtype = 'I' and  right(billtype,3) in ('111','117','112','113','114')
-and coalesce(lineservicedateto, statementto, LineServiceDateFrom, statementfrom) between
-@startdate and @enddate and paiddate <= @paidthrough
-and (@issuer_hios is null or issuer_hios = @issuer_hios)
+select distinct medical_claim_number, 'BillTypeIP'
+from MedicalClaims where form_type = 'I' and  right(bill_type,3) in ('111','117','112','113','114')
+and statement_to between
+@startdate and @enddate and paid_date <= @paidthrough
+and (@issuer_hios is null or hios_issuer_id = @issuer_hios)
 --- outpatient with acceptable servicecode
 insert into #acceptableclaims
-select distinct claimnumber, 'UBServiceCode'
+select distinct medical_claim_number, 'UBServiceCode'
 from MedicalClaims mc
-where formtype = 'I' and left(right(billtype,3),2) in ('13','71','76','77','85','87','73')
-and exists (select 1 from ServiceCodeReference scref where mc.ServiceCode = scref.SRVC_CD
+where form_type = 'I' and left(right(bill_type,3),2) in ('13','71','76','77','85','87','73')
+and exists (select 1 from ServiceCodeReference scref where mc.service_code = scref.SRVC_CD
 and scref.CPT_HCPCSELGBL_RISKADJSTMT_IND = 'Y'
-and (coalesce(LineServiceDateFrom, statementfrom, lineservicedateto, statementto))  between scref.SRVC_CD_EFCTV_strt_DT and scref.SRVC_CD_EFCTV_END_DT)
-and coalesce(lineservicedateto, statementto, LineServiceDateFrom, statementfrom) between
-@startdate and @enddate and paiddate <= @paidthrough
-	and (@issuer_hios is null or issuer_hios = @issuer_hios)
+and (coalesce(line_service_date_from, statement_from, line_service_date_to, statement_to))  between scref.SRVC_CD_EFCTV_strt_DT and scref.SRVC_CD_EFCTV_END_DT)
+and coalesce(line_service_date_to, statement_to, line_service_date_from, statement_from) between
+@startdate and @enddate and paid_date <= @paidthrough
+	and (@issuer_hios is null or hios_issuer_id = @issuer_hios)
 --- hcfa with acceptable servicecode
 insert into #acceptableclaims
-select distinct claimnumber, 'HCFAServiceCode'
+select distinct medical_claim_number, 'HCFAServiceCode'
 from MedicalClaims mc
-where formtype = 'P'
-and exists (select 1 from ServiceCodeReference scref where mc.ServiceCode = scref.SRVC_CD
+where form_type = 'P'
+and exists (select 1 from ServiceCodeReference scref where mc.service_code = scref.SRVC_CD
 and scref.CPT_HCPCSELGBL_RISKADJSTMT_IND = 'Y'
-and (coalesce(LineServiceDateFrom, statementfrom, lineservicedateto, statementto)) between scref.SRVC_CD_EFCTV_strt_DT and scref.SRVC_CD_EFCTV_END_DT)
-and coalesce(lineservicedateto, statementto, LineServiceDateFrom, statementfrom) between
-@startdate and @enddate and paiddate <= @paidthrough
-and (@issuer_hios is null or issuer_hios = @issuer_hios)
+and (coalesce(line_service_date_from, statement_from, line_service_date_to, statement_to)) between scref.SRVC_CD_EFCTV_strt_DT and scref.SRVC_CD_EFCTV_END_DT)
+and coalesce(line_service_date_to, statement_to, line_service_date_from, statement_from) between
+@startdate and @enddate and paid_date <= @paidthrough
+and (@issuer_hios is null or hios_issuer_id = @issuer_hios)
 --- joins acceptable claims to diagnosis codes and creates a list of member IDs and diagnoses
 
-delete from #AcceptableClaims where claimnumber not in (select claimnumber from medicalclaims where deniedflag = 'A')
+--delete from #AcceptableClaims where claimnumber not in (select claimnumber from medicalclaims where deniedflag = 'A')
 
 if object_id('tempdb..#MemberMapSvcDt') is not null drop table #memberMapSvcDt
 select distinct 
-memberid, diagnosis, clmno, svc_dt into #memberMapSvcDt
-from (select memberid, clm.claimnumber clmno,coalesce(lineservicedateto, lineservicedatefrom, statementto) svc_dt, [DX1]     ,[DX2]      ,[DX3]      ,[DX4]      ,[DX5]      ,[DX6]      ,[DX7]      ,[DX8]      ,[DX9]      ,[DX10]      ,[DX11]      ,[DX12]      ,[DX13]      ,[DX14]      ,[DX15]      ,[DX16]      ,[DX17]      ,[DX18]      ,[DX19]
+issuer_member_id,member_uid, diagnosis, clmno, svc_dt into #memberMapSvcDt
+from (select issuer_member_id,member_uid, clm.medical_claim_number clmno,coalesce(line_service_date_to, statement_to) svc_dt, [DX1]     ,[DX2]      ,[DX3]      ,[DX4]      ,[DX5]      ,[DX6]      ,[DX7]      ,[DX8]      ,[DX9]      ,[DX10]      ,[DX11]      ,[DX12]      ,[DX13]      ,[DX14]      ,[DX15]      ,[DX16]      ,[DX17]      ,[DX18]      ,[DX19]
       ,[DX20],[DX21] ,[DX22] ,[DX23] ,[DX24] ,[DX25]
-	  from medicalclaims clm join #acceptableclaims accept on clm.ClaimNumber = accept.claimnumber) p
-unpivot (diagnosis for claimnumber in ([DX1]     ,[DX2]      ,[DX3]      ,[DX4]      ,[DX5]      ,[DX6]      ,[DX7]      ,[DX8]      ,[DX9]      ,[DX10]      ,[DX11]      ,[DX12]      ,[DX13]      ,[DX14]      ,[DX15]      ,[DX16]      ,[DX17]      ,[DX18]      ,[DX19]
+	  from medicalclaims clm join #acceptableclaims accept on clm.medical_claim_number = accept.medical_claim_number) p
+unpivot (diagnosis for medical_claim_number in ([DX1]     ,[DX2]      ,[DX3]      ,[DX4]      ,[DX5]      ,[DX6]      ,[DX7]      ,[DX8]      ,[DX9]      ,[DX10]      ,[DX11]      ,[DX12]      ,[DX13]      ,[DX14]      ,[DX15]      ,[DX16]      ,[DX17]      ,[DX18]      ,[DX19]
       ,[DX20],[DX21] ,[DX22] ,[DX23] ,[DX24] ,[DX25]) )as unpvt
 
 	  ----- Add and Delete Supplemental Diagnoses ----
 	  delete from #memberMapSvcDt 
-	  where exists (select 1 from Supplemental supp where #memberMapSvcDt.clmno = supp.ClaimNumber
-	  and #memberMapSvcDt.diagnosis = supp.DX and supp.AddDeleteFlag = 'D'
-	  and (@issuer_hios is null or supp.issuer_hios = @issuer_hios)
+	  where exists (select 1 from Supplemental supp where #memberMapSvcDt.clmno = supp.medical_claim_number
+	  and #memberMapSvcDt.diagnosis = supp.DX and supp.add_delete_flag = 'D'
+	  and (@issuer_hios is null or supp.hios_issuer_id = @issuer_hios)
 	  )
 
 	  insert into #memberMapSvcDt
-	  select distinct MemberID, supp.dx, clm.ClaimNumber, coalesce(lineservicedateto, lineservicedatefrom, statementto) from medicalclaims clm join #acceptableclaims accept on clm.ClaimNumber = accept.claimnumber join Supplemental supp on clm.ClaimNumber = supp.ClaimNumber
-	  where AddDeleteFlag = 'A'
-	  and (@issuer_hios is null or supp.issuer_hios = @issuer_hios)
+	  select distinct clm.issuer_member_id, clm.member_uid, supp.dx, clm.medical_claim_number, coalesce(line_service_date_to, line_service_date_from, statement_to) from medicalclaims clm join #acceptableclaims accept on clm.medical_claim_number = accept.medical_claim_number join Supplemental supp on clm.medical_claim_number= supp.medical_claim_number
+	  where add_delete_flag = 'A'
+	  and (@issuer_hios is null or supp.hios_issuer_id= @issuer_hios)
 
 	  if object_id('tempdb..#MemberDiagnosisMap') is not null drop table #MemberDiagnosisMap
-	  select memberid, diagnosis, min(svc_dt) diag_dt 
+	  select issuer_member_id,member_uid,clmno, diagnosis, min(svc_dt) diag_dt 
 	  into #MemberDiagnosisMap
 	  from #memberMapSvcDt
-	  group by memberid, diagnosis
+	  group by issuer_member_id,member_uid,clmno, diagnosis
 
 	  --- Assign  HCCs and apply conditions ----
 
 	  if object_id('tempdb..#MemberHCCMap') is not null drop table #MemberHCCMap
 
-	  select distinct map.memberid, cc_cd HCC into #MemberHCCMap from #MemberDiagnosisMap map join enrollment enr on map.memberid = enr.memberid
+	  select distinct map.issuer_member_id,map.member_uid, cc_cd HCC into #MemberHCCMap from #MemberDiagnosisMap map join enrollment enr on map.member_uid = enr.member_uid
 	  join dx_mapping_table hcc on map.diagnosis = hcc.dgns_cd
 	  where diag_dt between dgns_cd_eff_strt_dt and dgns_cd_eff_end_dt
-	  and FLOOR(DATEDIFF(DAY, BirthDate, diag_dt))/365.25 between min_age_dgns_include and max_age_dgns_exclude and (CC_sex_split = 'X' or (gender = 'M' and cc_sex_split = 'male') or (gender = 'F' and cc_sex_split = 'female'))
-	  	  and FLOOR(DATEDIFF(DAY, BirthDate, diag_dt))/365.25 between cc_age_split_min_age_inc and cc_age_split_max_age_exc
+	  and FLOOR(DATEDIFF(DAY, birth_date, diag_dt))/365.25 between min_age_dgns_include and max_age_dgns_exclude and (CC_sex_split = 'X' or (gender = 'M' and cc_sex_split = 'male') or (gender = 'F' and cc_sex_split = 'female'))
+	  	  and FLOOR(DATEDIFF(DAY, birth_date, diag_dt))/365.25 between cc_age_split_min_age_inc and cc_age_split_max_age_exc
 		  union
-		  	  select map.memberid, acc_cd HCC from #MemberDiagnosisMap map join enrollment enr on map.memberid = enr.memberid
+		  	  select map.issuer_member_id,map.member_uid, acc_cd HCC from #MemberDiagnosisMap map join enrollment enr on map.member_uid = enr.member_uid
 	  join dx_mapping_table hcc on map.diagnosis = hcc.dgns_cd
 	  where diag_dt between dgns_cd_eff_strt_dt and dgns_cd_eff_end_dt
-	  and FLOOR(DATEDIFF(DAY, BirthDate, diag_dt))/365.25 between min_age_dgns_include and max_age_dgns_exclude and (CC_sex_split = 'X' or (gender = 'M' and cc_sex_split = 'male') or (gender = 'F' and cc_sex_split = 'female'))
-	  	  and FLOOR(DATEDIFF(DAY, BirthDate, diag_dt))/365.25 between cc_age_split_min_age_inc and cc_age_split_max_age_exc
+	  and FLOOR(DATEDIFF(DAY, birth_date, diag_dt))/365.25 between min_age_dgns_include and max_age_dgns_exclude and (CC_sex_split = 'X' or (gender = 'M' and cc_sex_split = 'male') or (gender = 'F' and cc_sex_split = 'female'))
+	  	  and FLOOR(DATEDIFF(DAY,birth_date, diag_dt))/365.25 between cc_age_split_min_age_inc and cc_age_split_max_age_exc
 		  and acc_cd <> '0'
 		  CREATE NONCLUSTERED INDEX hcc_maP
 ON [dbo].[#MemberHCCMap] ([HCC])
-INCLUDE ([memberid])
+INCLUDE ([issuer_member_id],[member_uid])
 /***** map each member to allowable RXCs *****/
 			  if object_id('tempdb..#RXC_Mapping') is not null drop table #rxc_mapping
 			  create table #rxc_mapping
-			  (memberid varchar(50),
+			  (issuer_member_id varchar(50),
+              member_uid varchar(100),
 			  rxc varchar(10))
 insert into #rxc_mapping
-select distinct memberid, RXC from PharmacyClaims rx join NDC_RXC ndc
+select distinct issuer_member_id,member_uid, RXC from PharmacyClaims rx join NDC_RXC ndc
 on rx.NDC = ndc.NDC
-and FilledDate between @startdate and @enddate
-and PaidDate <= @paidthrough
-and deniedflag = 'A'
-and (@issuer_hios is null or issuer_hios = @issuer_hios)
+and rx.filled_date between @startdate and @enddate
+and rx.paid_date <= @paidthrough
+--and deniedflag = 'A'
+and (@issuer_hios is null or hios_issuer_id = @issuer_hios)
 union
-select distinct memberid, rxc from medicalclaims med join hcpcsrxc hcpcs on med.ServiceCode = hcpcs.hcpcs_code
-where (formtype = 'P' or left(right(billtype,3),2) in ('11','13','71','76','77','85','87','73')) and coalesce(lineservicedateto, statementto, LineServiceDateFrom, statementfrom) between
-@startdate and @enddate and paiddate <= @paidthrough
-and deniedflag = 'A'
-and (@issuer_hios is null or issuer_hios = @issuer_hios)
+select distinct issuer_member_id,member_uid, rxc from medicalclaims med join hcpcsrxc hcpcs on med.service_code= hcpcs.hcpcs_code
+where (form_type = 'P' or left(right(bill_type,3),2) in ('11','13','71','76','77','85','87','73')) and coalesce( statement_to, Line_Service_Date_From, statement_from) between
+@startdate and @enddate and paid_date <= @paidthrough
+--and deniedflag = 'A'
+and (@issuer_hios is null or hios_issuer_id = @issuer_hios)
 
 
 /***** Update the member hcc table based on the records in the mapping tables ****/
@@ -242,577 +267,577 @@ and (@issuer_hios is null or issuer_hios = @issuer_hios)
 update hc
 set HHS_HCC001 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '1')
 
 update hc
 set HHS_HCC002 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '2')
 
 update hc
 set HHS_HCC003 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '3')
 
 update hc
 set HHS_HCC004 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '4')
 
 
 update hc
 set HHS_HCC006 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '6')
 
 
 update hc
 set HHS_HCC008 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '8')
 
 update hc
 set HHS_HCC009 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '9')
 
 update hc
 set HHS_HCC010 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '10')
 
 
 update hc
 set HHS_HCC011 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '11')
 
 update hc
 set HHS_HCC012 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '12')
 
 update hc
 set HHS_HCC013 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '13')
 
 update hc
 set HHS_HCC018 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '18')
 
 update hc
 set HHS_HCC019 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '19')
 
 update hc
 set HHS_HCC020 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '20')
 
 update hc
 set HHS_HCC021 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '21')
 
 update hc
 set HHS_HCC022 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '22')
 
 update hc
 set HHS_HCC023 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '23')
 
 update hc
 set HHS_HCC026 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '26')
 
 
 update hc
 set HHS_HCC027 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '27')
 
 
 update hc
 set HHS_HCC028 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '28')
 
 update hc
 set HHS_HCC029 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '29')
 
 update hc
 set HHS_HCC030 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '30')
 
 update hc
 set HHS_HCC034 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '34')
 
 update hc
 set HHS_HCC035_1 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '351')
 
 update hc
 set HHS_HCC035_2 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '352')
 
 update hc
 set HHS_HCC036 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '36')
 
 update hc
 set HHS_HCC037_1 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '371')
 
 update hc
 set HHS_HCC037_2 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '372')
 
 update hc
 set HHS_HCC041 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '41')
 
 update hc
 set HHS_HCC042 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '42')
 
 update hc
 set HHS_HCC045 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '45')
 
 update hc
 set HHS_HCC046 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '46')
 
 update hc
 set HHS_HCC047 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '47')
 
 
 update hc
 set HHS_HCC048 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '48')
 
 
 update hc
 set HHS_HCC054 = 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '54')
 
 update hc
 set HHS_HCC055= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '55')
 
 update hc
 set HHS_HCC056= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '56')
 
 update hc
 set HHS_HCC057= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '57')
 
 update hc
 set HHS_HCC061= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '61')
 
 update hc
 set HHS_HCC062= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '62')
 
 update hc
 set HHS_HCC063= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '63')
 
 update hc
 set HHS_HCC066= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '66')
 
 update hc
 set HHS_HCC067= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '67')
 
 update hc
 set HHS_HCC068= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '68')
 
 update hc
 set HHS_HCC069= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '69')
 
 update hc
 set HHS_HCC070= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '70')
 
 update hc
 set HHS_HCC071= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '71')
 
 update hc
 set HHS_HCC073= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '73')
 
 update hc
 set HHS_HCC074= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '74')
 
 update hc
 set HHS_HCC075= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '75')
 
 update hc
 set HHS_HCC081= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '81')
 
 update hc
 set HHS_HCC082= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '82')
 
 update hc
 set HHS_HCC083= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '83')
 
 update hc
 set HHS_HCC084= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '84')
 
 update hc
 set HHS_HCC087_1= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '871')
 
 update hc
 set HHS_HCC087_2= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '872')
 
 
 update hc
 set HHS_HCC088= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '88')
 
 update hc
 set HHS_HCC090= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '90')
 
 update hc
 set HHS_HCC094= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '94')
 
 update hc
 set HHS_HCC096= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '96')
 
 update hc
 set HHS_HCC097= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '97')
 
 update hc
 set HHS_HCC102= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '102')
 
 update hc
 set HHS_HCC103= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '103')
 
 update hc
 set HHS_HCC106= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '106')
 
 
 update hc
 set HHS_HCC107= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '107')
 
 update hc
 set HHS_HCC108= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '108')
 
 update hc
 set HHS_HCC109= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '109')
 
 update hc
 set HHS_HCC110= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '110')
 
 update hc
 set HHS_HCC111= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '111')
 
 
 update hc
 set HHS_HCC112= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '112')
 
 update hc
 set HHS_HCC113= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '113')
 
 update hc
 set HHS_HCC114= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '114')
 
 update hc
 set HHS_HCC115= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '115')
 
 update hc
 set HHS_HCC117= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '117')
 
 update hc
 set HHS_HCC118= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '118')
 
 update hc
 set HHS_HCC119= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '119')
 
 update hc
 set HHS_HCC120= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '120')
 
 update hc
 set HHS_HCC121= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '121')
 
 update hc
 set HHS_HCC122= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '122')
 
 update hc
 set HHS_HCC123= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '123')
 
 update hc
 set HHS_HCC125= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '125')
 
 update hc
 set HHS_HCC126= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '126')
 
 update hc
 set HHS_HCC127= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '127')
 
 
 update hc
 set HHS_HCC128= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '128')
 
 update hc
 set HHS_HCC129= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '129')
 
 update hc
 set HHS_HCC130= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '130')
 
 update hc
 set HHS_HCC131= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '131')
 
 
 update hc
 set HHS_HCC132= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '132')
 
 update hc
 set HHS_HCC135= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '135')
 
 update hc
 set HHS_HCC137= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '137')
 
 update hc
 set HHS_HCC138= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '138')
 
 update hc
 set HHS_HCC139= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '139')
 
 update hc
 set HHS_HCC142= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '142')
 
 update hc
 set HHS_HCC145= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '145')
 
 
@@ -820,292 +845,292 @@ and hcc = '145')
 update hc
 set HHS_HCC146= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '146')
 
 update hc
 set HHS_HCC149= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '149')
 
 
 update hc
 set HHS_HCC150= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '150')
 
 
 update hc
 set HHS_HCC151= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '151')
 
 
 update hc
 set HHS_HCC153= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '153')
 
 update hc
 set HHS_HCC154= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
-and hcc = '154')
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
+and hcc='154')
 
 update hc
 set HHS_HCC156= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '156')
 
 update hc
 set HHS_HCC158= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '158')
 
 update hc
 set HHS_HCC159= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '159')
 
 update hc
 set HHS_HCC160= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '160')
 
 
 update hc
 set HHS_HCC161_1= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '1611')
 
 
 update hc
 set HHS_HCC161_2= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '1612')
 
 
 update hc
 set HHS_HCC162= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '162')
 
 update hc
 set HHS_HCC163= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '163')
 
 update hc
 set HHS_HCC174= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '174')
 
 update hc
 set HHS_HCC183= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '183')
 
 update hc
 set HHS_HCC184= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '184')
 
 update hc
 set HHS_HCC187= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '187')
 
 
 update hc
 set HHS_HCC188= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '188')
 
 update hc
 set HHS_HCC203= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '203')
 
 update hc
 set HHS_HCC204= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '204')
 
 
 update hc
 set HHS_HCC205= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '205')
 
 update hc
 set HHS_HCC207= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '207')
 
 
 update hc
 set HHS_HCC208= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '208')
 
 
 update hc
 set HHS_HCC209= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '209')
 
 
 update hc
 set HHS_HCC210= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '210')
 
 update hc
 set HHS_HCC211= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '211')
 
 update hc
 set HHS_HCC212= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '212')
 
 update hc
 set HHS_HCC217= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '217')
 
 update hc
 set HHS_HCC218= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '218')
 
 update hc
 set HHS_HCC219= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '219')
 
 update hc
 set HHS_HCC223= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '223')
 
 update hc
 set HHS_HCC226= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '226')
 
 update hc
 set HHS_HCC228= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '228')
 
 update hc
 set HHS_HCC234= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '234')
 
 update hc
 set HHS_HCC251= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '251')
 
 update hc
 set HHS_HCC253= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '253')
 
 update hc
 set HHS_HCC254= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '254')
 
 
 update hc
 set HHS_HCC251= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '251')
 
 update hc
 set HHS_HCC242= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '242')
 
 update hc
 set HHS_HCC243= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '243')
 
 update hc
 set HHS_HCC244= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '244')
 
 update hc
 set HHS_HCC245= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '245')
 
 update hc
 set HHS_HCC246= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '246')
 update hc
 set HHS_HCC247= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '247')
 update hc
 set HHS_HCC248= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '248')
 update hc
 set HHS_HCC249= 1
 from hcc_list hc 
-where exists (select 1 from #MemberHCCMap mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #MemberHCCMap mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and hcc = '249')
 /** apply set to 0 logic **/
 update hcc_list
@@ -1581,61 +1606,61 @@ where age_last >= 60 and sex = 'F'
 
 update hc set RXC_01 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '1')
 
 update hc set RXC_02 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '2')
 
 update hc set RXC_03 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '3')
 
 update hc set RXC_04 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '4')
 
 update hc set RXC_05 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '5')
 
 
 update hc set RXC_06 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '6')
 
 update hc set RXC_07 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '7')
 
 
 
 update hc set RXC_08 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '8')
 
 
 update hc set RXC_09 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '9')
 
 update hc set RXC_10 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = '10')
 
 update hc set ACF_01 = 1
 from hcc_list hc 
-where exists (select 1 from #rxc_mapping mp where hc.mbr_id = mp.MemberID
+where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = 'ACF_01')
 
 
@@ -1645,7 +1670,7 @@ update hc set RXC_07 = 0
 from hcc_list hc 
 where rxc_06 = 1
 
---- Proposed change where if someone was taking PrEP but also had an HIV DX, give themc redit for RXC01 rather than ACF
+--- Proposed change where if someone was taking PrEP but also had an HIV DX, give them credit for RXC01 rather than ACF
 update hc set rxc_01 = 1, acf_01 = 0 from hcc_list hc  where acf_01 = 1 and hhs_hcc001 = 1
 
 --- RXC HCC interaction factors ---
@@ -1769,9 +1794,11 @@ update hcc_list set G06A =1, HHS_HCC067 =0, HHS_HCC068   = 0, HHS_HCC069   = 0
 where  (HHS_HCC067 =1 or HHS_HCC068 = 1 or HHS_HCC069   = 1)
 and age_last >= 21
 
+IF @benefityear <= 2024 BEGIN
 update hcc_list set G07A =1, HHS_HCC070 =0, HHS_HCC071   = 0
 where  (HHS_HCC070 =1 or HHS_HCC071 = 1)
 and age_last >= 21
+END
 
 update hcc_list set G08 =1, HHS_HCC073 =0, HHS_HCC074   = 0
 where  (HHS_HCC073 =1 or HHS_HCC074 = 1)
@@ -1869,9 +1896,11 @@ update hcc_list set G06A =1, HHS_HCC067 =0, HHS_HCC068   = 0, HHS_HCC069   = 0
 where  (HHS_HCC067 =1 or HHS_HCC068 = 1 or HHS_HCC069   = 1)
 and age_last between 2 and 20
 
+IF @benefityear <= 2024 BEGIN
 update hcc_list set G07A =1, HHS_HCC070 =0, HHS_HCC071   = 0
 where  (HHS_HCC070 =1 or HHS_HCC071 = 1)
 and age_last between 2 and 20
+END
 
 update hcc_list set G08 =1, HHS_HCC073 =0, HHS_HCC074   = 0
 where  (HHS_HCC073 =1 or HHS_HCC074 = 1)
@@ -2131,9 +2160,9 @@ but count is still populated in the hcc_list table as a potentially useful indic
 if object_id('tempdb..#paymentHCCcount') is not null drop table #paymentHCCcount
 
 --- unpivot and then count distinct by member ID; only Payment HCCs are pulled in
-select mbr_id, metal, age_last, hcc, val, eff_date, exp_date into #paymentHCCcount
+select issuer_member_id, metal, age_last, hcc, val, eff_date, exp_date into #paymentHCCcount
 from (
-SELECT [MBR_ID]
+SELECT issuer_member_id
 , metal, age_last, eff_date, exp_date
       ,[HHS_HCC001]
       ,[HHS_HCC002]
@@ -2150,7 +2179,7 @@ SELECT [MBR_ID]
       ,[HHS_HCC019]
       ,[HHS_HCC020]
       ,[HHS_HCC021]
-      ,[HHS_HCC022]
+
       ,[HHS_HCC023]
       ,[HHS_HCC026]
       ,[HHS_HCC027]
@@ -2317,7 +2346,7 @@ SELECT [MBR_ID]
       ,[HHS_HCC019]
       ,[HHS_HCC020]
       ,[HHS_HCC021]
-      ,[HHS_HCC022]
+ 
       ,[HHS_HCC023]
       ,[HHS_HCC026]
       ,[HHS_HCC027]
@@ -2469,17 +2498,17 @@ SELECT [MBR_ID]
       ) ) as unpvt
 	  CREATE NONCLUSTERED INDEX hcc_count
 ON [dbo].[#paymentHCCcount] ([val])
-INCLUDE ([mbr_id],[hcc])
+INCLUDE (issuer_member_id,[hcc])
 	  IF OBJECT_ID('TEMPDB..#hCC_COUNT') IS NOT NULL DROP TABLE #hCC_COUNT
 
-select mbr_id, count(distinct hcc) pmt_hcc_count INTO #hCC_COUNT from #paymenthcccount
+select issuer_member_id, count(distinct hcc) pmt_hcc_count INTO #hCC_COUNT from #paymenthcccount
 where val = 1
-group by mbr_id
+group by issuer_member_id
 
 
 
 update hc set hcc_count = #hCC_COUNT.pmt_hcc_count
-from hcc_list hc  join #hCC_COUNT on hc.mbr_id = #hCC_COUNT.mbr_id
+from hcc_list hc  join #hCC_COUNT on hc.issuer_member_id = #hCC_COUNT.issuer_member_id
 and age_last >= 2
 
 /* This is the logic that updates the severity flag and severe / interaction HCC beginnig with the 2023 benefit year; skipped if benefit year is 2022 or earlier. 
@@ -2601,10 +2630,10 @@ END
 
 if object_id('tempdb..#hcc_unpivot') is not null drop table #hcc_unpivot
 
-select mbr_id, metal, age_last, hcc, val, eff_date, exp_date into #hcc_unpivot
+select issuer_member_id, metal, age_last, hcc, val, eff_date, exp_date into #hcc_unpivot
 from (
 
-SELECT [MBR_ID]
+SELECT issuer_member_id
 , metal, age_last, eff_date, exp_date,
 [AGE0_MALE]
       ,[AGE1_MALE]
@@ -3071,7 +3100,7 @@ SELECT [MBR_ID]
       ,[G17A]
       ,[G18A]
       ,[G19B]
-	  ,[g24]
+	  ,[G24]
 	  ,[acf_01]
       ,[INT_GROUP_H]
 	  ,[SEVERE_1_HCC]
@@ -3166,13 +3195,13 @@ SELECT [MBR_ID]
 	  sum(val*gold_level) gold_risk_score,
 	  sum(val*platinum_level) platinum_risk_score,
 	  sum(val*catastrophic_level) catastrophic_risk_score,
-	  mbr_id, eff_date, exp_date into #RiskscoreBYMemberPre_CSR from #hcc_unpivot up 
+	  issuer_member_id,metal, eff_date, exp_date into #RiskscoreBYMemberPre_CSR from #hcc_unpivot up 
 	  join RiskScoreFactors rf
 	  on up.hcc = rf.variable
 	  where age_last >= '21'
 	  and model = 'Adult'
 	  and model_year = @model_year
-	  group by mbr_id, eff_date, exp_date
+	  group by issuer_member_id,metal, eff_date, exp_date
 	  union
 	  --- child model
 	  	  select sum(case when metal = 'bronze' then val*bronze_level when metal = 'silver' then val*silver_level
@@ -3182,12 +3211,12 @@ SELECT [MBR_ID]
 	  sum(val*gold_level) gold_risk_score,
 	  sum(val*platinum_level) platinum_risk_score,
 	  sum(val*catastrophic_level) catastrophic_risk_score,
-	  mbr_id, eff_date, exp_date from #hcc_unpivot up join RiskScoreFactors rf
+	  issuer_member_id,metal, eff_date, exp_date from #hcc_unpivot up join RiskScoreFactors rf
 	  on up.hcc = rf.variable
 	  where age_last between '2' and '20'
 	  and model = 'Child'
 	  and model_year = @model_year
-	  group by mbr_id, eff_date, exp_date
+	  group by issuer_member_id,metal, eff_date, exp_date
 	  --- infant model
 	  union
 	  	  select sum(case when metal = 'bronze' then val*bronze_level when metal = 'silver' then val*silver_level
@@ -3198,16 +3227,16 @@ SELECT [MBR_ID]
 	  sum(val*gold_level) gold_risk_score,
 	  sum(val*platinum_level) platinum_risk_score,
 	  sum(val*catastrophic_level) catastrophic_risk_score
-	  , mbr_id, eff_date, exp_date  from #hcc_unpivot up join RiskScoreFactors rf
+	  , issuer_member_id,metal, eff_date, exp_date  from #hcc_unpivot up join RiskScoreFactors rf
 	  on up.hcc = rf.variable
 	  where age_last between '0' and '1'
 	  and model = 'Infant'
 	  and model_year = @model_year
-	  group by mbr_id, eff_date, exp_date
+	  group by issuer_member_id,metal, eff_date, exp_date
 if object_id('tempdb..#riskscorepostCSR') is not null 
 drop table #riskscorepostCSR
 --- take the risk score, then apply the CSR multiplier factors ----
-	  select hc.mbr_id, hios, metal, rs.EFF_DATE, rs.EXP_DATE, rs.risk_score rs_pre,
+	  select hc.issuer_member_id, hios_plan_id, hc.metal, rs.EFF_DATE, rs.EXP_DATE, rs.risk_score rs_pre,
 	  rs.risk_score *c.adj_factor rs_post_csr,
 	  rs.bronze_risk_score, rs.silver_risk_score, rs.gold_risk_score, rs.platinum_risk_score, rs.catastrophic_risk_score
 	  ,rs.silver_risk_score*css.adj_factor silver_87_94_risk_score
@@ -3217,9 +3246,9 @@ JOIN CSR_ADJ_FACTORS c on hc.csr = c.csr_code
 and c.model_year = @benefityear
 join csr_adj_factors css on css.model_year = @benefityear
 and css.CSR_Code = '2'
-on rs.mbr_id = hc.mbr_id
+on rs.issuer_member_id = hc.issuer_member_id and rs.metal=hc.metal
 and rs.EFF_DATE = hc.EFF_DATE and rs.EXP_DATE = hc.EXP_DATE
-order by mbr_id
+order by issuer_member_id
 
 --- update the hcc_list table ----
 update hc
@@ -3231,7 +3260,7 @@ hc.platinum_risk_score = rs.platinum_risk_score,
 hc.catastrophic_risk_score = rs.catastrophic_risk_score,
 hc.silver_87_94_risk_score = rs.silver_87_94_risk_score
 from
-hcc_list hc join #riskscorepostCSR rs on rs.mbr_id = hc.mbr_id
+hcc_list hc join #riskscorepostCSR rs on rs.issuer_member_id = hc.issuer_member_id and rs.metal=hc.metal
 and rs.EFF_DATE = hc.EFF_DATE and rs.EXP_DATE = hc.EXP_DATE
 if @droptemp = 1
 begin
@@ -3276,12 +3305,11 @@ end
 end
 ----- End Model Code. Use the HCC_List table to query your risk scores -----
 EndCode:
-select left(hc.hios,14), hc.metal, market, ratingarea,
-sum(risk_score*(datediff(d, hc.eff_date, hc.exp_date)/30.00))/sum(datediff(d, hc.eff_date,
-
-hc.exp_date)/30.00), sum(datediff(d, hc.eff_date,
-
-hc.exp_date)/30.00)
+select left(hc.hios_plan_id,14), hc.metal, market, hc.rating_area,
+sum(risk_score*edge_member_months)/sum(edge_member_months), sum(edge_member_months)
 from hcc_list hc
-group by grouping sets ((left(hc.hios,14), hc.metal, market, ratingarea),market)
+group by grouping sets ((left(hc.hios_plan_id,14), hc.metal, market, rating_area),market)
+
+select * from hcc_list
+
 
