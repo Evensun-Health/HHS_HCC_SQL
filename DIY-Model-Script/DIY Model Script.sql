@@ -21,7 +21,7 @@ if @benefityear = 2022 set @model_year = '2022_DIY_122022'
 if @benefityear = 2023 set @model_year = '2023_NBPP_050622'
 if @benefityear = 2024 set @model_year = '2024_DIY_090624'
 if @benefityear = 2025 set @model_year = '2025_DIY_072325'
-if @benefityear = 2026 set @model_year = '2026_NBPP_100524'
+if @benefityear = 2026 set @model_year = '2026_DIY_073126'
 if @benefityear = 2027 set @model_year = '2027_NBPP_020926'
 /* Updates HCC List table from the Enrollment tables. Account for State CSR variants In the 2025 benefit year, Arkansas, California, Colorado, Connecticut, Massachusetts, New Mexico, and New 
 York have premium assistance Medicaid Alternative plans or other types of State subsidy plans.*/
@@ -1662,6 +1662,7 @@ update hc set ACF_01 = 1
 from hcc_list hc 
 where exists (select 1 from #rxc_mapping mp where (hc.issuer_member_id= mp.issuer_member_id or hc.member_uid=mp.member_uid)
 and rxc = 'ACF_01')
+and hc.age_last >= 12 --- CMS ACF_PrEP applies to ages 12+ only (ACF_PrEP age>20; ACF_PrEP_Child 11<age<21)
 
 
 ---- set to 0 RXC
